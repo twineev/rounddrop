@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"$HOME/.fnm\")",
+      "Bash(curl -fsSL \"https://github.com/Schniz/fnm/releases/latest/download/fnm-macos.zip\" -o /tmp/fnm.zip)",
+      "Bash(unzip -o /tmp/fnm.zip -d \"$HOME/.fnm/\")",
+      "Bash(chmod +x \"$HOME/.fnm/fnm\")",
+      "Bash(\"$HOME/.fnm/fnm\" --version)"
+    ]
+  }
+}
