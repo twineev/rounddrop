@@ -59,7 +59,7 @@ export default async function ProfilePage() {
       </div>
 
       {/* Role-specific details */}
-      {role === "founder" && roleProfile && (
+      {role === "founder" && roleProfile ? (
         <div className="rounded-xl border border-gray-200 bg-white p-6 space-y-4">
           <h3 className="font-bold text-gray-900">Company Details</h3>
           <div className="grid grid-cols-1 gap-3">
@@ -85,19 +85,19 @@ export default async function ProfilePage() {
             </div>
           </div>
         </div>
-      )}
+      ) : null}
 
-      {role === "investor" && roleProfile && (
+      {role === "investor" && roleProfile ? (
         <>
           <div className="rounded-xl border border-gray-200 bg-white p-6 space-y-4">
             <h3 className="font-bold text-gray-900">Investment Profile</h3>
             <div className="grid grid-cols-1 gap-3">
-              {roleProfile.firm_name && (
+              {roleProfile.firm_name ? (
                 <div>
                   <span className="text-xs text-gray-500">Firm</span>
                   <p className="font-semibold text-gray-900 text-sm">{roleProfile.firm_name as string}</p>
                 </div>
-              )}
+              ) : null}
               <div>
                 <span className="text-xs text-gray-500">Check Size</span>
                 <p className="font-semibold text-gray-900 text-sm">
@@ -112,16 +112,16 @@ export default async function ProfilePage() {
                   ))}
                 </div>
               </div>
-              {roleProfile.thesis && (
+              {roleProfile.thesis ? (
                 <div>
                   <span className="text-xs text-gray-500">Thesis</span>
                   <p className="text-sm text-gray-700">{roleProfile.thesis as string}</p>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
 
-          {portfolioCompanies && portfolioCompanies.length > 0 && (
+          {portfolioCompanies && portfolioCompanies.length > 0 ? (
             <div className="rounded-xl border border-gray-200 bg-white p-6">
               <h3 className="font-bold text-gray-900 mb-4">Portfolio ({portfolioCompanies.length})</h3>
               <div className="space-y-2">
@@ -133,18 +133,18 @@ export default async function ProfilePage() {
                         {[company.round, company.year].filter(Boolean).join(" - ")}
                       </p>
                     </div>
-                    {company.status && (
+                    {company.status ? (
                       <span className="rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-medium text-green-700 capitalize">
                         {(company.status as string).replace("_", " ")}
                       </span>
-                    )}
+                    ) : null}
                   </div>
                 ))}
               </div>
             </div>
-          )}
+          ) : null}
         </>
-      )}
+      ) : null}
 
       {isPreview && (
         <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
