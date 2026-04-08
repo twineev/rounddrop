@@ -51,11 +51,11 @@ export default async function ProfilePage() {
             <span className="inline-flex rounded-full bg-green-50 px-2.5 py-0.5 text-xs font-semibold text-green-700 capitalize">{role}</span>
           </div>
         </div>
-        {profile?.linkedin_url && (
+        {profile?.linkedin_url ? (
           <a href={profile.linkedin_url as string} target="_blank" rel="noopener noreferrer" className="mt-3 inline-block text-sm text-green-600 hover:text-green-700">
             LinkedIn Profile
           </a>
-        )}
+        ) : null}
       </div>
 
       {/* Role-specific details */}
