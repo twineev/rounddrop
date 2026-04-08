@@ -5,7 +5,14 @@
       "Bash(curl -fsSL \"https://github.com/Schniz/fnm/releases/latest/download/fnm-macos.zip\" -o /tmp/fnm.zip)",
       "Bash(unzip -o /tmp/fnm.zip -d \"$HOME/.fnm/\")",
       "Bash(chmod +x \"$HOME/.fnm/fnm\")",
-      "Bash(\"$HOME/.fnm/fnm\" --version)"
+      "Bash(\"$HOME/.fnm/fnm\" --version)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(ln -sf /Users/twinee/.fnm/node-versions/v24.14.1/installation/bin/node /usr/local/bin/node)",
+      "Bash(ln -sf /Users/twinee/.fnm/node-versions/v24.14.1/installation/bin/npx /usr/local/bin/npx)",
+      "Bash(ln -sf /Users/twinee/.fnm/node-versions/v24.14.1/installation/bin/npm /usr/local/bin/npm)",
+      "Bash(/usr/local/bin/node --version)",
+      "Bash(export PATH=\"$HOME/.fnm/node-versions/v24.14.1/installation/bin:$PATH\")",
+      "Bash(npx next:*)"
     ]
   }
 }
