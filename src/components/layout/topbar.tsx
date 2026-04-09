@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Rocket, MessageSquare, Bell, User, CircleUser, Bookmark, Briefcase } from "lucide-react";
+import { LayoutDashboard, Rocket, MessageSquare, Bell, User, CircleUser, Bookmark, Briefcase, Building2, Target } from "lucide-react";
 
 interface TopbarProps {
   role: "founder" | "investor";
@@ -11,7 +11,8 @@ interface TopbarProps {
 
 const founderNav = [
   { href: "/rounds", label: "Rounds", icon: Rocket },
-  { href: "/messages", label: "Messages", icon: MessageSquare },
+  { href: "/investors", label: "Investors", icon: Building2 },
+  { href: "/pipeline", label: "Pipeline", icon: Target },
   { href: "/notifications", label: "Alerts", icon: Bell },
 ];
 

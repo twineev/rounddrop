@@ -49,11 +49,12 @@ export type Database = {
           id: string;
           profile_id: string;
           company_name: string;
-          one_liner: string;
+          one_liner: string | null;
           sector: string[];
           company_website: string | null;
-          calendar_link: string;
+          calendar_link: string | null;
           accelerator_affiliations: string[] | null;
+          stage: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -61,11 +62,12 @@ export type Database = {
           id?: string;
           profile_id: string;
           company_name: string;
-          one_liner: string;
+          one_liner?: string | null;
           sector: string[];
           company_website?: string | null;
-          calendar_link: string;
+          calendar_link?: string | null;
           accelerator_affiliations?: string[] | null;
+          stage?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -73,11 +75,12 @@ export type Database = {
           id?: string;
           profile_id?: string;
           company_name?: string;
-          one_liner?: string;
+          one_liner?: string | null;
           sector?: string[];
           company_website?: string | null;
-          calendar_link?: string;
+          calendar_link?: string | null;
           accelerator_affiliations?: string[] | null;
+          stage?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -85,7 +88,7 @@ export type Database = {
       investor_profiles: {
         Row: {
           id: string;
-          profile_id: string;
+          profile_id: string | null;
           firm_name: string | null;
           investor_type: string;
           check_size_min: number;
@@ -95,12 +98,21 @@ export type Database = {
           thesis: string | null;
           notable_exits: string | null;
           value_add: string | null;
+          is_claimed: boolean;
+          gp_name: string | null;
+          fund_website: string | null;
+          twitter_url: string | null;
+          contact_email: string | null;
+          fund_domain: string | null;
+          slug: string | null;
+          claim_token: string | null;
+          claimed_at: string | null;
           created_at: string;
           updated_at: string;
         };
         Insert: {
           id?: string;
-          profile_id: string;
+          profile_id?: string | null;
           firm_name?: string | null;
           investor_type: string;
           check_size_min: number;
@@ -110,12 +122,21 @@ export type Database = {
           thesis?: string | null;
           notable_exits?: string | null;
           value_add?: string | null;
+          is_claimed?: boolean;
+          gp_name?: string | null;
+          fund_website?: string | null;
+          twitter_url?: string | null;
+          contact_email?: string | null;
+          fund_domain?: string | null;
+          slug?: string | null;
+          claim_token?: string | null;
+          claimed_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
         Update: {
           id?: string;
-          profile_id?: string;
+          profile_id?: string | null;
           firm_name?: string | null;
           investor_type?: string;
           check_size_min?: number;
@@ -125,6 +146,15 @@ export type Database = {
           thesis?: string | null;
           notable_exits?: string | null;
           value_add?: string | null;
+          is_claimed?: boolean;
+          gp_name?: string | null;
+          fund_website?: string | null;
+          twitter_url?: string | null;
+          contact_email?: string | null;
+          fund_domain?: string | null;
+          slug?: string | null;
+          claim_token?: string | null;
+          claimed_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -305,6 +335,73 @@ export type Database = {
           content?: string;
           read_at?: string | null;
           created_at?: string;
+        };
+      };
+      deck_shares: {
+        Row: {
+          id: string;
+          founder_profile_id: string;
+          investor_profile_id: string;
+          deck_url: string;
+          deck_filename: string | null;
+          message: string | null;
+          view_count: number;
+          first_viewed_at: string | null;
+          last_viewed_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          founder_profile_id: string;
+          investor_profile_id: string;
+          deck_url: string;
+          deck_filename?: string | null;
+          message?: string | null;
+          view_count?: number;
+          first_viewed_at?: string | null;
+          last_viewed_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          founder_profile_id?: string;
+          investor_profile_id?: string;
+          deck_url?: string;
+          deck_filename?: string | null;
+          message?: string | null;
+          view_count?: number;
+          first_viewed_at?: string | null;
+          last_viewed_at?: string | null;
+          created_at?: string;
+        };
+      };
+      pipeline_entries: {
+        Row: {
+          id: string;
+          founder_profile_id: string;
+          investor_profile_id: string;
+          status: "researching" | "deck_shared" | "viewed" | "meeting_scheduled" | "passed";
+          notes: string | null;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          founder_profile_id: string;
+          investor_profile_id: string;
+          status?: "researching" | "deck_shared" | "viewed" | "meeting_scheduled" | "passed";
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          founder_profile_id?: string;
+          investor_profile_id?: string;
+          status?: "researching" | "deck_shared" | "viewed" | "meeting_scheduled" | "passed";
+          notes?: string | null;
+          created_at?: string;
+          updated_at?: string;
         };
       };
       notifications: {

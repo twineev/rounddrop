@@ -56,6 +56,14 @@ export const TRACTION_METRIC_OPTIONS = [
   { key: "gmv", label: "GMV", prefix: "$" },
 ] as const;
 
+export const PIPELINE_STATUSES = {
+  researching: { label: "Researching", color: "bg-gray-100 text-gray-700" },
+  deck_shared: { label: "Deck Shared", color: "bg-blue-100 text-blue-700" },
+  viewed: { label: "Viewed", color: "bg-green-100 text-green-700" },
+  meeting_scheduled: { label: "Meeting Scheduled", color: "bg-purple-100 text-purple-700" },
+  passed: { label: "Passed", color: "bg-red-100 text-red-700" },
+} as const;
+
 export const ROUND_STATUSES = {
   draft: { label: "Draft", color: "bg-gray-100 text-gray-700" },
   live: { label: "Live", color: "bg-green-100 text-green-700" },

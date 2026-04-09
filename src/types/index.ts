@@ -9,6 +9,8 @@ export type DealInteraction = Database["public"]["Tables"]["deal_interactions"][
 export type MessageThread = Database["public"]["Tables"]["message_threads"]["Row"];
 export type Message = Database["public"]["Tables"]["messages"]["Row"];
 export type Notification = Database["public"]["Tables"]["notifications"]["Row"];
+export type DeckShare = Database["public"]["Tables"]["deck_shares"]["Row"];
+export type PipelineEntry = Database["public"]["Tables"]["pipeline_entries"]["Row"];
 
 export type TractionMetrics = {
   mrr?: number;
@@ -37,4 +39,22 @@ export type ThreadWithParticipant = MessageThread & {
   other_participant: Profile;
   last_message?: Message;
   unread_count: number;
+};
+
+export type InvestorProfileWithPortfolio = InvestorProfile & {
+  portfolio_companies: PortfolioCompany[];
+};
+
+export type DeckShareWithInvestor = DeckShare & {
+  investor_profiles: InvestorProfile;
+};
+
+export type DeckShareWithFounder = DeckShare & {
+  founder_profiles: FounderProfile & {
+    profiles: Profile;
+  };
+};
+
+export type PipelineEntryWithInvestor = PipelineEntry & {
+  investor_profiles: InvestorProfile;
 };

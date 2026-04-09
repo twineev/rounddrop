@@ -11,6 +11,8 @@ import {
   User,
   Briefcase,
   Bookmark,
+  Building2,
+  Target,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -19,6 +21,8 @@ interface SidebarProps {
 
 const founderNav = [
   { href: "/rounds", label: "My Rounds", icon: Rocket },
+  { href: "/investors", label: "Investors", icon: Building2 },
+  { href: "/pipeline", label: "Pipeline", icon: Target },
   { href: "/messages", label: "Messages", icon: MessageSquare },
   { href: "/notifications", label: "Notifications", icon: Bell },
   { href: "/profile", label: "Profile", icon: User },
