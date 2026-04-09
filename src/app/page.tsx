@@ -135,7 +135,7 @@ export default function LandingPage() {
             </a>
           </div>
           <Link
-            href="#join"
+            href="/sign-up"
             className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-green-700 hover:-translate-y-px"
           >
             Join the waitlist &rarr;
@@ -168,13 +168,13 @@ export default function LandingPage() {
           {/* CTAs */}
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
-              href="#join"
+              href="/sign-up"
               className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-green-700 hover:-translate-y-px"
             >
               Drop Your Round
             </Link>
             <Link
-              href="#join"
+              href="/sign-up"
               className="inline-flex items-center gap-2 rounded-lg border-[1.5px] border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 transition-all hover:border-green-300 hover:-translate-y-px"
             >
               Browse as Investor
@@ -382,24 +382,12 @@ export default function LandingPage() {
                 ))}
               </ul>
               <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition focus:border-green-300 focus:ring-2 focus:ring-green-100"
-                />
-                <input
-                  type="text"
-                  placeholder="Company name"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition focus:border-green-300 focus:ring-2 focus:ring-green-100"
-                />
-                <input
-                  type="email"
-                  placeholder="Work email"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition focus:border-green-300 focus:ring-2 focus:ring-green-100"
-                />
-                <button className="w-full rounded-lg bg-green-600 py-3 text-sm font-semibold text-white transition-all hover:bg-green-700 hover:-translate-y-px">
+                <Link
+                  href="/sign-up"
+                  className="block w-full rounded-lg bg-green-600 py-3 text-sm font-semibold text-white text-center transition-all hover:bg-green-700 hover:-translate-y-px"
+                >
                   Apply for First Drop &rarr;
-                </button>
+                </Link>
               </div>
               <p className="mt-3 text-xs text-gray-400 text-center">
                 Free to apply. No credit card. Limited spots in Q2 cohort.
@@ -425,27 +413,12 @@ export default function LandingPage() {
                 ))}
               </ul>
               <div className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Your name"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition focus:border-purple-300 focus:ring-2 focus:ring-purple-100"
-                />
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm outline-none transition focus:border-purple-300 focus:ring-2 focus:ring-purple-100"
-                />
-                <select className="w-full rounded-lg border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm text-gray-500 outline-none transition focus:border-purple-300 focus:ring-2 focus:ring-purple-100">
-                  <option value="">Investor type</option>
-                  <option>Angel</option>
-                  <option>Solo GP</option>
-                  <option>VC firm</option>
-                  <option>Family office</option>
-                  <option>Corporate</option>
-                </select>
-                <button className="w-full rounded-lg bg-purple-600 py-3 text-sm font-semibold text-white transition-all hover:bg-purple-700 hover:-translate-y-px">
+                <Link
+                  href="/sign-up"
+                  className="block w-full rounded-lg bg-purple-600 py-3 text-sm font-semibold text-white text-center transition-all hover:bg-purple-700 hover:-translate-y-px"
+                >
                   Get Early Investor Access &rarr;
-                </button>
+                </Link>
               </div>
               <p className="mt-3 text-xs text-gray-400 text-center">
                 Free to join. Verification required before round access.
