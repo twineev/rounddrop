@@ -54,32 +54,32 @@
   --card-foreground: #111827;
   --popover: #ffffff;
   --popover-foreground: #111827;
-  --primary: #16a34a;
+  --primary: #50C878;
   --primary-foreground: #ffffff;
   --secondary: #f3f4f6;
   --secondary-foreground: #111827;
   --muted: #f3f4f6;
   --muted-foreground: #6b7280;
-  --accent: #dcfce7;
-  --accent-foreground: #15803d;
+  --accent: rgba(80,200,120,0.08);
+  --accent-foreground: #2A9D5C;
   --destructive: #dc2626;
   --border: #e5e7eb;
   --input: #e5e7eb;
-  --ring: #16a34a;
-  --chart-1: #16a34a;
-  --chart-2: #7c3aed;
-  --chart-3: #f59e0b;
+  --ring: #50C878;
+  --chart-1: #50C878;
+  --chart-2: #2E6BAD;
+  --chart-3: #E8C026;
   --chart-4: #dc2626;
   --chart-5: #3b82f6;
   --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #111827;
-  --sidebar-primary: #16a34a;
+  --sidebar-primary: #50C878;
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: #dcfce7;
-  --sidebar-accent-foreground: #15803d;
+  --sidebar-accent: rgba(80,200,120,0.08);
+  --sidebar-accent-foreground: #2A9D5C;
   --sidebar-border: #e5e7eb;
-  --sidebar-ring: #16a34a;
+  --sidebar-ring: #50C878;
 }
 
 .dark {
@@ -126,6 +126,18 @@
   html {
     @apply font-sans;
   }
+}
+
+.btn-secondary-investor:hover {
+  border-color: #2E6BAD !important;
+  color: #2E6BAD !important;
+}
+
+.btn-investor-cta {
+  background: #2E6BAD;
+}
+.btn-investor-cta:hover {
+  background: #1B3A5C !important;
 }
 
 @keyframes pulse-dot {
