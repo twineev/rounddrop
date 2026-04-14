@@ -492,6 +492,26 @@ export default function LandingPage() {
                 a: "Free for founders. Investors get free basic access with premium features available for a subscription.",
               },
               {
+                q: "What is RoundDrop?",
+                a: "RoundDrop is the public launchpad for live investment rounds. Founders drop their pre-seed or seed round, and verified investors browse metrics, follow rounds in real time, and request intros in one click — turning months of cold outreach into a launch moment.",
+              },
+              {
+                q: "How does RoundDrop help founders?",
+                a: "Instead of months of cold outreach, founders drop their round once and get in front of 50+ verified investors the same week. Real-time follow counts show who's interested, intros are requested in one click, and accepted meetings land on both calendars in under 60 seconds.",
+              },
+              {
+                q: "How does RoundDrop help investors?",
+                a: "Investors get curated weekly deal flow — pre-seed and seed rounds with live metrics, traction, and team info — without chasing warm intros. Follow rounds to track momentum, request meetings in one click, and spot trending sectors from the leaderboard.",
+              },
+              {
+                q: "What kind of founders are using RoundDrop?",
+                a: "Our founders are early-stage startups raising between Pre-Seed and Series A+, with most being in the early stage of growth. To be an ideal fit for the RoundDrop community, founders should either have a product or service in market (this attracts the most interest from our investor community) and/or show strong traction (this further increases investor interest and credibility). We welcome founders across industries — Tech & Software, Consumer / CPG, Social & Community, Food & Beverage, Fashion & Beauty, Finance / Fintech, Healthcare / BioTech, Robotics, Renewables, and Future of Work.",
+              },
+              {
+                q: "What's the difference between RoundDrop vs a traditional fundraise?",
+                a: "A traditional raise is months of serial 1:1 cold outreach, fragmented intros, and no signal on investor interest. RoundDrop flips that into a public launch moment: one drop, parallel investor attention within 24 hours, live follow counts, and calendar-native booking — so rounds close in weeks, not quarters.",
+              },
+              {
                 q: "How is this different from AngelList or a pitch deck database?",
                 a: "RoundDrop creates exclusivity and urgency. Rounds drop weekly like a launch, not a static listing. Think Product Hunt for fundraising.",
               },
