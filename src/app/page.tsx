@@ -1,11 +1,33 @@
 import Link from "next/link";
 
+function LogoMark({ size = 28, id = "nav" }: { size?: number; id?: string }) {
+  return (
+    <svg viewBox="0 0 200 200" width={size} height={size} className="shrink-0">
+      <defs>
+        <linearGradient id={`${id}L`} x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor="#D4A017" />
+          <stop offset="100%" stopColor="#F0D848" />
+        </linearGradient>
+        <linearGradient id={`${id}R`} x1="0%" y1="100%" x2="0%" y2="0%">
+          <stop offset="0%" stopColor="#2A9D5C" />
+          <stop offset="100%" stopColor="#7EDDA0" />
+        </linearGradient>
+      </defs>
+      <path d="M152 162 Q172 80 102 38" fill="none" stroke={`url(#${id}R)`} strokeWidth="22" strokeLinecap="round" />
+      <path d="M48 162 Q28 80 98 38" fill="none" stroke={`url(#${id}L)`} strokeWidth="22" strokeLinecap="round" />
+    </svg>
+  );
+}
+
 function Badge() {
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border border-green-200 bg-green-50 px-4 py-1.5 text-sm font-medium text-green-700">
+    <div
+      className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium"
+      style={{ border: "1px solid #7EDDA0", background: "rgba(80,200,120,0.08)", color: "#2A9D5C" }}
+    >
       <span className="relative flex h-2 w-2">
-        <span className="absolute inline-flex h-full w-full animate-pulse-dot rounded-full bg-green-500" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+        <span className="absolute inline-flex h-full w-full animate-pulse-dot rounded-full" style={{ background: "#50C878" }} />
+        <span className="relative inline-flex h-2 w-2 rounded-full" style={{ background: "#50C878" }} />
       </span>
       Launching Q2 2026 &middot; Limited early access
     </div>
@@ -15,7 +37,7 @@ function Badge() {
 function StatCard({ value, label }: { value: string; label: string }) {
   return (
     <div className="text-center">
-      <p className="text-2xl font-bold text-gray-900">{value}</p>
+      <p className="text-2xl font-bold" style={{ color: "#0F1A2E" }}>{value}</p>
       <p className="text-sm text-gray-500 mt-1">{label}</p>
     </div>
   );
@@ -47,7 +69,7 @@ function DealCard({
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-50 p-5 transition-all hover:shadow-lg hover:-translate-y-0.5">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="font-bold text-gray-900">{name}</h3>
+        <h3 className="font-bold" style={{ color: "#0F1A2E" }}>{name}</h3>
         <div className="flex gap-1.5">
           <span
             className="rounded-full px-2.5 py-0.5 text-xs font-semibold"
@@ -55,16 +77,16 @@ function DealCard({
           >
             {stage}
           </span>
-          {closing && (
+          {closing ? (
             <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-600">
               Closing Friday
             </span>
-          )}
-          {hot && (
+          ) : null}
+          {hot ? (
             <span className="rounded-full bg-red-50 px-2.5 py-0.5 text-xs font-semibold text-red-600">
               Hot
             </span>
-          )}
+          ) : null}
         </div>
       </div>
       <p className="text-sm text-gray-600 mb-4">{description}</p>
@@ -72,15 +94,15 @@ function DealCard({
         {metrics.map((m) => (
           <div key={m.label} className="text-xs">
             <span className="text-gray-500">{m.label}</span>
-            <p className="font-semibold text-gray-900">{m.value}</p>
+            <p className="font-semibold" style={{ color: "#0F1A2E" }}>{m.value}</p>
           </div>
         ))}
       </div>
       <div className="mb-2">
         <div className="h-1.5 w-full rounded-full bg-gray-200">
           <div
-            className="h-1.5 rounded-full bg-green-500 transition-all"
-            style={{ width: `${filled}%` }}
+            className="h-1.5 rounded-full transition-all"
+            style={{ width: `${filled}%`, background: "linear-gradient(90deg, #E8C026, #50C878)" }}
           />
         </div>
       </div>
@@ -103,10 +125,13 @@ function StepCard({
 }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white p-7">
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green-50 text-green-600 font-bold text-sm mb-4">
+      <div
+        className="flex h-10 w-10 items-center justify-center rounded-xl font-bold text-sm mb-4"
+        style={{ background: "rgba(232,192,38,0.12)", color: "#D4A017" }}
+      >
         {number}
       </div>
-      <h3 className="font-bold text-gray-900 mb-2">{title}</h3>
+      <h3 className="font-bold mb-2" style={{ color: "#0F1A2E" }}>{title}</h3>
       <p className="text-sm text-gray-500 leading-relaxed">{description}</p>
     </div>
   );
@@ -118,9 +143,10 @@ export default function LandingPage() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-[1100px] flex h-14 items-center justify-between px-5">
-          <Link href="/" className="flex items-center gap-1.5">
-            <span className="text-base font-bold text-gray-900">
-              Round<span className="text-green-600">Drop</span>
+          <Link href="/" className="flex items-center gap-2">
+            <LogoMark size={28} id="nav" />
+            <span className="text-base font-bold" style={{ color: "#0F1A2E" }}>
+              Round<span style={{ color: "#50C878" }}>Drop</span>
             </span>
           </Link>
           <div className="hidden sm:flex items-center gap-6 text-sm text-gray-500">
@@ -136,7 +162,8 @@ export default function LandingPage() {
           </div>
           <Link
             href="/sign-up"
-            className="rounded-lg bg-green-600 px-4 py-2 text-sm font-medium text-white transition-all hover:bg-green-700 hover:-translate-y-px"
+            className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-105 hover:-translate-y-px"
+            style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
           >
             Join the waitlist &rarr;
           </Link>
@@ -147,10 +174,19 @@ export default function LandingPage() {
       <section className="bg-white pt-16 pb-20">
         <div className="mx-auto max-w-[1100px] px-5 text-center">
           <Badge />
-          <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl" style={{ letterSpacing: "-1.5px" }}>
+          <h1 className="mt-8 text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl" style={{ letterSpacing: "-1.5px", color: "#0F1A2E" }}>
             Fundraising should feel like a{" "}
-            <span className="text-green-600">launch</span>, not a cold call
-            marathon.
+            <span
+              style={{
+                background: "linear-gradient(135deg, #E8C026, #50C878)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
+              launch
+            </span>
+            , not a cold call marathon.
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-500">
             RoundDrop is the public launchpad where startups drop their live
@@ -169,13 +205,14 @@ export default function LandingPage() {
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-lg bg-green-600 px-7 py-3.5 text-sm font-semibold text-white transition-all hover:bg-green-700 hover:-translate-y-px"
+              className="inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-105 hover:-translate-y-px"
+              style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
             >
               Drop Your Round
             </Link>
             <Link
               href="/sign-up"
-              className="inline-flex items-center gap-2 rounded-lg border-[1.5px] border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 transition-all hover:border-green-300 hover:-translate-y-px"
+              className="btn-secondary-investor inline-flex items-center gap-2 rounded-lg border-[1.5px] border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 transition-all hover:-translate-y-px"
             >
               Browse as Investor
             </Link>
@@ -188,7 +225,8 @@ export default function LandingPage() {
           <div className="mt-4">
             <Link
               href="/demo"
-              className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors underline underline-offset-4"
+              className="text-sm font-medium transition-colors underline underline-offset-4"
+              style={{ color: "#2E6BAD" }}
             >
               Or try the interactive demo &rarr;
             </Link>
@@ -200,8 +238,8 @@ export default function LandingPage() {
       <section id="how-it-works" className="border-t border-gray-200 bg-white py-20">
         <div className="mx-auto max-w-[1100px] px-5">
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold text-green-600 mb-2">How it works</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+            <p className="text-sm font-semibold mb-2" style={{ color: "#E8C026" }}>How it works</p>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: "#0F1A2E" }}>
               A launch moment, not a listing
             </h2>
           </div>
@@ -235,8 +273,8 @@ export default function LandingPage() {
       <section id="live-rounds" className="border-t border-gray-200 bg-white py-20">
         <div className="mx-auto max-w-[1100px] px-5">
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold text-green-600 mb-2">Live rounds</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+            <p className="text-sm font-semibold mb-2" style={{ color: "#E8C026" }}>Live rounds</p>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: "#0F1A2E" }}>
               See what&apos;s dropping
             </h2>
             <p className="mt-3 text-gray-500 max-w-lg mx-auto">
@@ -248,8 +286,8 @@ export default function LandingPage() {
             <DealCard
               name="Arcana AI"
               stage="Pre-Seed"
-              tagColor="#92400e"
-              tagBg="#fef3c7"
+              tagColor="#D4A017"
+              tagBg="rgba(232,192,38,0.15)"
               description="AI-native legal research for solo practitioners"
               metrics={[
                 { label: "MRR", value: "$42K" },
@@ -263,8 +301,8 @@ export default function LandingPage() {
             <DealCard
               name="Vaultic"
               stage="Seed"
-              tagColor="#15803d"
-              tagBg="#dcfce7"
+              tagColor="#2A9D5C"
+              tagBg="rgba(80,200,120,0.15)"
               description="Supply chain risk intelligence for mid-market manufacturers"
               metrics={[
                 { label: "ARR", value: "$118K" },
@@ -277,8 +315,8 @@ export default function LandingPage() {
             <DealCard
               name="Nudge Health"
               stage="Pre-Seed"
-              tagColor="#92400e"
-              tagBg="#fef3c7"
+              tagColor="#D4A017"
+              tagBg="rgba(232,192,38,0.15)"
               description="Behavioral nudges that cut patient no-show rates by 60%"
               metrics={[
                 { label: "Clients", value: "14 clinics" },
@@ -297,8 +335,8 @@ export default function LandingPage() {
       <section className="border-t border-gray-200 bg-gray-50 py-20">
         <div className="mx-auto max-w-[1100px] px-5">
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold text-green-600 mb-2">Why it&apos;s different</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+            <p className="text-sm font-semibold mb-2" style={{ color: "#E8C026" }}>Why it&apos;s different</p>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: "#0F1A2E" }}>
               Fundraising is broken. We&apos;re fixing it.
             </h2>
           </div>
@@ -306,7 +344,7 @@ export default function LandingPage() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Problems */}
             <div className="rounded-xl border border-gray-200 bg-white p-8">
-              <h3 className="font-bold text-gray-900 mb-5">The current way</h3>
+              <h3 className="font-bold mb-5" style={{ color: "#0F1A2E" }}>The current way</h3>
               <ul className="space-y-3">
                 {[
                   "Months of cold outreach with no response",
@@ -326,8 +364,11 @@ export default function LandingPage() {
             </div>
 
             {/* Solution */}
-            <div className="rounded-xl border border-green-200 bg-green-50/30 p-8">
-              <h3 className="font-bold text-gray-900 mb-5">The RoundDrop way</h3>
+            <div
+              className="rounded-xl p-8"
+              style={{ border: "1px solid #7EDDA0", background: "rgba(80,200,120,0.04)" }}
+            >
+              <h3 className="font-bold mb-5" style={{ color: "#0F1A2E" }}>The RoundDrop way</h3>
               <ul className="space-y-3">
                 {[
                   "Investor attention within 24 hours of drop",
@@ -337,7 +378,10 @@ export default function LandingPage() {
                   "Traction-first ranking system",
                 ].map((item) => (
                   <li key={item} className="flex items-start gap-3 text-sm text-gray-700">
-                    <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600 text-xs font-bold">
+                    <span
+                      className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full text-xs font-bold"
+                      style={{ background: "rgba(80,200,120,0.15)", color: "#2A9D5C" }}
+                    >
                       &#10003;
                     </span>
                     {item}
@@ -353,8 +397,8 @@ export default function LandingPage() {
       <section id="join" className="border-t border-gray-200 bg-white py-20">
         <div className="mx-auto max-w-[1100px] px-5">
           <div className="text-center mb-14">
-            <p className="text-sm font-semibold text-green-600 mb-2">Join the waitlist</p>
-            <h2 className="text-3xl font-extrabold text-gray-900 tracking-tight sm:text-4xl">
+            <p className="text-sm font-semibold mb-2" style={{ color: "#E8C026" }}>Join the waitlist</p>
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: "#0F1A2E" }}>
               Get early access
             </h2>
             <p className="mt-3 text-gray-500 max-w-lg mx-auto">
@@ -365,8 +409,11 @@ export default function LandingPage() {
           <div className="grid gap-6 lg:grid-cols-2 max-w-3xl mx-auto">
             {/* Founder card */}
             <div className="rounded-xl border-[1.5px] border-gray-200 bg-white p-8 pt-0 overflow-hidden">
-              <div className="h-1 bg-green-500 -mx-8 mb-8" />
-              <h3 className="text-lg font-bold text-gray-900 mb-1">I&apos;m Raising</h3>
+              <div
+                className="h-1 -mx-8 mb-8"
+                style={{ background: "linear-gradient(90deg, #E8C026, #50C878)" }}
+              />
+              <h3 className="text-lg font-bold mb-1" style={{ color: "#0F1A2E" }}>I&apos;m Raising</h3>
               <p className="text-sm text-gray-500 mb-6">Drop your round to verified investors</p>
               <ul className="space-y-2 mb-6">
                 {[
@@ -376,7 +423,7 @@ export default function LandingPage() {
                   "Calendar-native intro scheduling",
                 ].map((perk) => (
                   <li key={perk} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="text-green-500 mt-0.5">&#10003;</span>
+                    <span className="mt-0.5" style={{ color: "#50C878" }}>&#10003;</span>
                     {perk}
                   </li>
                 ))}
@@ -384,7 +431,8 @@ export default function LandingPage() {
               <div className="space-y-3">
                 <Link
                   href="/sign-up"
-                  className="block w-full rounded-lg bg-green-600 py-3 text-sm font-semibold text-white text-center transition-all hover:bg-green-700 hover:-translate-y-px"
+                  className="block w-full rounded-lg py-3 text-sm font-semibold text-white text-center transition-all hover:brightness-105 hover:-translate-y-px"
+                  style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
                 >
                   Apply for First Drop &rarr;
                 </Link>
@@ -396,8 +444,11 @@ export default function LandingPage() {
 
             {/* Investor card */}
             <div className="rounded-xl border-[1.5px] border-gray-200 bg-white p-8 pt-0 overflow-hidden">
-              <div className="h-1 bg-purple-500 -mx-8 mb-8" />
-              <h3 className="text-lg font-bold text-gray-900 mb-1">I&apos;m Investing</h3>
+              <div
+                className="h-1 -mx-8 mb-8"
+                style={{ background: "linear-gradient(90deg, #2E6BAD, #5BA4E6)" }}
+              />
+              <h3 className="text-lg font-bold mb-1" style={{ color: "#0F1A2E" }}>I&apos;m Investing</h3>
               <p className="text-sm text-gray-500 mb-6">Get curated deal flow every week</p>
               <ul className="space-y-2 mb-6">
                 {[
@@ -407,7 +458,7 @@ export default function LandingPage() {
                   "Trending sector signals and deal data",
                 ].map((perk) => (
                   <li key={perk} className="flex items-start gap-2 text-sm text-gray-600">
-                    <span className="text-purple-500 mt-0.5">&#10003;</span>
+                    <span className="mt-0.5" style={{ color: "#2E6BAD" }}>&#10003;</span>
                     {perk}
                   </li>
                 ))}
@@ -415,7 +466,7 @@ export default function LandingPage() {
               <div className="space-y-3">
                 <Link
                   href="/sign-up"
-                  className="block w-full rounded-lg bg-purple-600 py-3 text-sm font-semibold text-white text-center transition-all hover:bg-purple-700 hover:-translate-y-px"
+                  className="btn-investor-cta block w-full rounded-lg py-3 text-sm font-semibold text-white text-center transition-all hover:-translate-y-px"
                 >
                   Get Early Investor Access &rarr;
                 </Link>
@@ -431,7 +482,7 @@ export default function LandingPage() {
       {/* FAQ */}
       <section className="border-t border-gray-200 bg-gray-50 py-20">
         <div className="mx-auto max-w-[700px] px-5">
-          <h2 className="text-2xl font-extrabold text-gray-900 text-center mb-10">
+          <h2 className="text-2xl font-extrabold text-center mb-10" style={{ color: "#0F1A2E" }}>
             Frequently asked questions
           </h2>
           <div className="space-y-6">
@@ -439,6 +490,26 @@ export default function LandingPage() {
               {
                 q: "Is RoundDrop free?",
                 a: "Free for founders. Investors get free basic access with premium features available for a subscription.",
+              },
+              {
+                q: "What is RoundDrop?",
+                a: "RoundDrop is the public launchpad for live investment rounds. Founders drop their pre-seed or seed round, and verified investors browse metrics, follow rounds in real time, and request intros in one click — turning months of cold outreach into a launch moment.",
+              },
+              {
+                q: "How does RoundDrop help founders?",
+                a: "Instead of months of cold outreach, founders drop their round once and get in front of 50+ verified investors the same week. Real-time follow counts show who's interested, intros are requested in one click, and accepted meetings land on both calendars in under 60 seconds.",
+              },
+              {
+                q: "How does RoundDrop help investors?",
+                a: "Investors get curated weekly deal flow — pre-seed and seed rounds with live metrics, traction, and team info — without chasing warm intros. Follow rounds to track momentum, request meetings in one click, and spot trending sectors from the leaderboard.",
+              },
+              {
+                q: "What kind of founders are using RoundDrop?",
+                a: "Our founders are early-stage startups raising between Pre-Seed and Series A+, with most being in the early stage of growth. To be an ideal fit for the RoundDrop community, founders should either have a product or service in market (this attracts the most interest from our investor community) and/or show strong traction (this further increases investor interest and credibility). We welcome founders across industries — Tech & Software, Consumer / CPG, Social & Community, Food & Beverage, Fashion & Beauty, Finance / Fintech, Healthcare / BioTech, Robotics, Renewables, and Future of Work.",
+              },
+              {
+                q: "What's the difference between RoundDrop vs a traditional fundraise?",
+                a: "A traditional raise is months of serial 1:1 cold outreach, fragmented intros, and no signal on investor interest. RoundDrop flips that into a public launch moment: one drop, parallel investor attention within 24 hours, live follow counts, and calendar-native booking — so rounds close in weeks, not quarters.",
               },
               {
                 q: "How is this different from AngelList or a pitch deck database?",
@@ -458,7 +529,7 @@ export default function LandingPage() {
               },
             ].map((faq) => (
               <div key={faq.q} className="rounded-xl border border-gray-200 bg-white p-6">
-                <h3 className="font-semibold text-gray-900 mb-2">{faq.q}</h3>
+                <h3 className="font-semibold mb-2" style={{ color: "#0F1A2E" }}>{faq.q}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{faq.a}</p>
               </div>
             ))}
@@ -467,10 +538,11 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 bg-gray-900 py-10">
+      <footer className="py-10" style={{ borderTop: "1px solid #1B3A5C", background: "#0F1A2E" }}>
         <div className="mx-auto max-w-[1100px] px-5 text-center">
-          <p className="text-sm font-bold text-white mb-3">
-            Round<span className="text-green-400">Drop</span>
+          <p className="flex items-center justify-center gap-2 text-sm font-bold text-white mb-3">
+            <LogoMark size={20} id="footer" />
+            Round<span style={{ color: "#7EDDA0" }}>Drop</span>
           </p>
           <p className="text-xs text-gray-400 mb-4">
             The launchpad for investment rounds.
@@ -486,7 +558,7 @@ export default function LandingPage() {
               hello@rounddrop.co
             </a>
           </div>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs" style={{ color: "#374151" }}>
             &copy; 2026 RoundDrop. All rights reserved.
           </p>
         </div>
