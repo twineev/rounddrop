@@ -1,4 +1,4 @@
-import Link from "next/link";
+// Using plain <a> tags for landing page CTAs to avoid hydration issues with Clerk
 
 function LogoMark({ size = 28, id = "nav" }: { size?: number; id?: string }) {
   return (
@@ -143,12 +143,12 @@ export default function LandingPage() {
       {/* Nav */}
       <header className="sticky top-0 z-50 border-b border-gray-200 bg-white/95 backdrop-blur-sm">
         <div className="mx-auto max-w-[1100px] flex h-14 items-center justify-between px-5">
-          <Link href="/" className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <LogoMark size={28} id="nav" />
             <span className="text-base font-bold" style={{ color: "#0F1A2E" }}>
               Round<span style={{ color: "#50C878" }}>Drop</span>
             </span>
-          </Link>
+          </a>
           <div className="hidden sm:flex items-center gap-6 text-sm text-gray-500">
             <a href="#how-it-works" className="hover:text-gray-900 transition-colors">
               How it works
@@ -160,13 +160,13 @@ export default function LandingPage() {
               Join the waitlist
             </a>
           </div>
-          <Link
-            href="/sign-up"
+          <a
+            href="/onboarding"
             className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-105 hover:-translate-y-px"
             style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
           >
             Join the waitlist &rarr;
-          </Link>
+          </a>
         </div>
       </header>
 
@@ -203,19 +203,19 @@ export default function LandingPage() {
 
           {/* CTAs */}
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              href="/sign-up"
+            <a
+              href="/onboarding"
               className="inline-flex items-center gap-2 rounded-lg px-7 py-3.5 text-sm font-semibold text-white transition-all hover:brightness-105 hover:-translate-y-px"
               style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
             >
               Drop Your Round
-            </Link>
-            <Link
-              href="/sign-up"
+            </a>
+            <a
+              href="/onboarding"
               className="btn-secondary-investor inline-flex items-center gap-2 rounded-lg border-[1.5px] border-gray-200 bg-white px-7 py-3.5 text-sm font-semibold text-gray-700 transition-all hover:-translate-y-px"
             >
               Browse as Investor
-            </Link>
+            </a>
           </div>
 
           <p className="mt-8 text-sm text-gray-400">
@@ -223,13 +223,13 @@ export default function LandingPage() {
           </p>
 
           <div className="mt-4">
-            <Link
+            <a
               href="/demo"
               className="text-sm font-medium transition-colors underline underline-offset-4"
               style={{ color: "#2E6BAD" }}
             >
               Or try the interactive demo &rarr;
-            </Link>
+            </a>
           </div>
         </div>
       </section>
@@ -429,13 +429,13 @@ export default function LandingPage() {
                 ))}
               </ul>
               <div className="space-y-3">
-                <Link
-                  href="/sign-up"
+                <a
+                  href="/onboarding"
                   className="block w-full rounded-lg py-3 text-sm font-semibold text-white text-center transition-all hover:brightness-105 hover:-translate-y-px"
                   style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
                 >
                   Apply for First Drop &rarr;
-                </Link>
+                </a>
               </div>
               <p className="mt-3 text-xs text-gray-400 text-center">
                 Free to apply. No credit card. Limited spots in Q2 cohort.
@@ -464,12 +464,12 @@ export default function LandingPage() {
                 ))}
               </ul>
               <div className="space-y-3">
-                <Link
-                  href="/sign-up"
+                <a
+                  href="/onboarding"
                   className="btn-investor-cta block w-full rounded-lg py-3 text-sm font-semibold text-white text-center transition-all hover:-translate-y-px"
                 >
                   Get Early Investor Access &rarr;
-                </Link>
+                </a>
               </div>
               <p className="mt-3 text-xs text-gray-400 text-center">
                 Free to join. Verification required before round access.

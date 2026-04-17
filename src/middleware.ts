@@ -31,9 +31,11 @@ export default function middleware(req: NextRequest) {
     }
 
     if (!userId) {
-      const signInUrl = new URL("/sign-in", req.url);
-      signInUrl.searchParams.set("redirect_url", req.url);
-      return NextResponse.redirect(signInUrl);
+      // Send first-time visitors to sign-up; existing users can click "Sign in" from there
+      const isOnboarding = isOnboardingRoute(req);
+      const authUrl = new URL(isOnboarding ? "/sign-up" : "/sign-in", req.url);
+      authUrl.searchParams.set("redirect_url", req.url);
+      return NextResponse.redirect(authUrl);
     }
 
     const onboardingComplete = (sessionClaims?.metadata as Record<string, unknown>)
