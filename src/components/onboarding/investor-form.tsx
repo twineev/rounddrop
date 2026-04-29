@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { investorProfileSchema, type InvestorProfileInput } from "@/lib/validations/investor";
@@ -18,6 +19,7 @@ const selectClass =
 
 export function InvestorForm() {
   const router = useRouter();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   const [selectedStages, setSelectedStages] = useState<string[]>([]);
@@ -65,7 +67,8 @@ export function InvestorForm() {
     try {
       await createInvestorProfile(data);
       toast.success("Profile created! Redirecting...");
-      router.push("/deals");
+      try { await user?.reload(); } catch { /* non-fatal */ }
+      window.location.href = "/deals";
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong");
     } finally {

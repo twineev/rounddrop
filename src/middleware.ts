@@ -39,15 +39,50 @@ export default function middleware(req: NextRequest) {
       return NextResponse.redirect(authUrl);
     }
 
-    const onboardingComplete = (sessionClaims?.metadata as Record<string, unknown>)
+    let onboardingComplete = (sessionClaims?.metadata as Record<string, unknown>)
       ?.onboardingComplete;
+    let role = (sessionClaims?.metadata as Record<string, unknown>)?.role;
+
+    // Fallback: session claims can be stale right after onboarding (Clerk
+    // metadata updates server-side but the JWT in the user's cookie still
+    // has old claims for up to a few seconds). If claims say not-onboarded,
+    // double-check the DB before forcing them back to /onboarding.
+    if (!onboardingComplete) {
+      try {
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+        if (supabaseUrl && serviceKey) {
+          const res = await fetch(
+            `${supabaseUrl}/rest/v1/profiles?select=onboarding_completed,role&clerk_user_id=eq.${userId}&limit=1`,
+            {
+              headers: {
+                apikey: serviceKey,
+                Authorization: `Bearer ${serviceKey}`,
+              },
+              cache: "no-store",
+            }
+          );
+          if (res.ok) {
+            const rows = (await res.json()) as Array<{
+              onboarding_completed: boolean;
+              role: string | null;
+            }>;
+            if (rows[0]?.onboarding_completed) {
+              onboardingComplete = true;
+              role = rows[0].role || role;
+            }
+          }
+        }
+      } catch {
+        // ignore — fall back to session-claims-only behavior below
+      }
+    }
 
     if (!onboardingComplete && !isOnboardingRoute(req)) {
       return NextResponse.redirect(new URL("/onboarding", req.url));
     }
 
     if (onboardingComplete && isOnboardingRoute(req)) {
-      const role = (sessionClaims?.metadata as Record<string, unknown>)?.role;
       const dashboardUrl = role === "founder" ? "/rounds" : "/deals";
       return NextResponse.redirect(new URL(dashboardUrl, req.url));
     }

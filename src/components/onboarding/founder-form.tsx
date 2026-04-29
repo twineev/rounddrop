@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { founderProfileSchema, type FounderProfileInput } from "@/lib/validations/founder";
@@ -15,6 +16,7 @@ const inputClass =
 
 export function FounderForm() {
   const router = useRouter();
+  const { user } = useUser();
   const [loading, setLoading] = useState(false);
   const [selectedSectors, setSelectedSectors] = useState<string[]>([]);
   const [accelerators, setAccelerators] = useState<string[]>([]);
@@ -62,7 +64,12 @@ export function FounderForm() {
     try {
       await createFounderProfile(data);
       toast.success("Profile created! Redirecting...");
-      router.push("/rounds");
+      // Force Clerk to refresh the session so the new metadata
+      // (onboardingComplete: true, role: founder) lands in our JWT
+      // before middleware re-evaluates the next route.
+      try { await user?.reload(); } catch { /* non-fatal */ }
+      // Hard navigation to bypass any cached RSC payloads.
+      window.location.href = "/rounds";
     } catch (error) {
       toast.error(error instanceof Error ? error.message : "Something went wrong");
     } finally {
