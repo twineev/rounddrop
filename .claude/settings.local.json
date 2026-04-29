@@ -12,7 +12,8 @@
       "Bash(ln -sf /Users/twinee/.fnm/node-versions/v24.14.1/installation/bin/npm /usr/local/bin/npm)",
       "Bash(/usr/local/bin/node --version)",
       "Bash(export PATH=\"$HOME/.fnm/node-versions/v24.14.1/installation/bin:$PATH\")",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(curl -s http://localhost:3000/)"
     ]
   }
 }

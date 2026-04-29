@@ -2,6 +2,36 @@
 
 import { createAdminClient } from "@/lib/supabase/admin";
 
+// Columns safe to expose to anonymous visitors in the public directory.
+// Deliberately excludes: claim_token, contact_email, fund_domain, profile_id, claimed_at.
+const PUBLIC_INVESTOR_COLUMNS = `
+  id,
+  profile_id,
+  firm_name,
+  gp_name,
+  investor_type,
+  check_size_min,
+  check_size_max,
+  sectors,
+  stage_preference,
+  thesis,
+  fund_website,
+  twitter_url,
+  linkedin_url,
+  location,
+  years_investing,
+  main_markets,
+  recent_checks,
+  deck_criteria,
+  founder_assessment,
+  notable_exits,
+  value_add,
+  slug,
+  is_claimed,
+  created_at,
+  portfolio_companies (*)
+`;
+
 export async function getInvestorDirectory(filters?: {
   sectors?: string[];
   stage?: string;
@@ -12,10 +42,7 @@ export async function getInvestorDirectory(filters?: {
 
   let query = supabase
     .from("investor_profiles")
-    .select(`
-      *,
-      portfolio_companies (*)
-    `)
+    .select(PUBLIC_INVESTOR_COLUMNS)
     .order("created_at", { ascending: false });
 
   if (filters?.stage) {
@@ -50,10 +77,7 @@ export async function getInvestorBySlug(slug: string) {
 
   const { data, error } = await supabase
     .from("investor_profiles")
-    .select(`
-      *,
-      portfolio_companies (*)
-    `)
+    .select(PUBLIC_INVESTOR_COLUMNS)
     .eq("slug", slug)
     .single();
 
@@ -62,32 +86,3 @@ export async function getInvestorBySlug(slug: string) {
   return data;
 }
 
-export async function claimInvestorProfile(investorProfileId: string, email: string) {
-  const supabase = createAdminClient();
-
-  // Verify the profile exists and is unclaimed
-  const { data: profile, error: fetchError } = await supabase
-    .from("investor_profiles")
-    .select("id, is_claimed, contact_email")
-    .eq("id", investorProfileId)
-    .single();
-
-  if (fetchError || !profile) throw new Error("Investor profile not found");
-  if (profile.is_claimed) throw new Error("This profile has already been claimed");
-
-  // Generate a claim token
-  const claimToken = crypto.randomUUID();
-
-  // Store the claim token and email
-  const { error: updateError } = await supabase
-    .from("investor_profiles")
-    .update({
-      claim_token: claimToken,
-      contact_email: email,
-    })
-    .eq("id", investorProfileId);
-
-  if (updateError) throw new Error("Failed to initiate claim: " + updateError.message);
-
-  return { success: true, message: "Claim initiated. Check your email for verification." };
-}

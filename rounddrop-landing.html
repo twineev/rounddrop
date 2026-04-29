@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RoundDrop — The Launchpad for Investment Rounds</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #111827; background: #f9fafb; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    ul { list-style: none; }
+
+    /* Pulse animation */
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.5); }
+    }
+
+    /* Nav */
+    .nav { position: sticky; top: 0; z-index: 50; border-bottom: 1px solid #e5e7eb; background: rgba(255,255,255,0.95); backdrop-filter: blur(8px); }
+    .nav-inner { max-width: 1100px; margin: 0 auto; display: flex; height: 56px; align-items: center; justify-content: space-between; padding: 0 20px; }
+    .logo { font-size: 16px; font-weight: 700; color: #111827; }
+    .logo span { color: #16a34a; }
+    .nav-links { display: flex; align-items: center; gap: 24px; font-size: 14px; color: #6b7280; }
+    .nav-links a:hover { color: #111827; }
+    .nav-cta { display: inline-block; border-radius: 8px; background: #16a34a; padding: 8px 16px; font-size: 14px; font-weight: 500; color: #fff; transition: all 0.2s; }
+    .nav-cta:hover { background: #15803d; transform: translateY(-1px); }
+
+    /* Sections */
+    .section { padding: 80px 20px; }
+    .section-inner { max-width: 1100px; margin: 0 auto; }
+    .section-white { background: #fff; }
+    .section-gray { background: #f9fafb; }
+    .section-border { border-top: 1px solid #e5e7eb; }
+    .text-center { text-align: center; }
+
+    /* Badge */
+    .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 9999px; border: 1px solid #bbf7d0; background: #f0fdf4; padding: 6px 16px; font-size: 14px; font-weight: 500; color: #15803d; }
+    .badge-dot { position: relative; display: flex; width: 8px; height: 8px; }
+    .badge-dot-pulse { position: absolute; width: 100%; height: 100%; border-radius: 9999px; background: #22c55e; animation: pulse-dot 2s ease-in-out infinite; }
+    .badge-dot-solid { position: relative; width: 8px; height: 8px; border-radius: 9999px; background: #22c55e; }
+
+    /* Hero */
+    .hero { background: #fff; padding: 64px 20px 80px; }
+    .hero-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+    .hero h1 { margin-top: 32px; font-size: clamp(36px, 5vw, 60px); font-weight: 800; letter-spacing: -1.5px; line-height: 1.1; color: #111827; }
+    .hero h1 span { color: #16a34a; }
+    .hero p { margin: 24px auto 0; max-width: 640px; font-size: 18px; color: #6b7280; line-height: 1.6; }
+
+    /* Stats */
+    .stats { display: flex; max-width: 560px; margin: 48px auto 0; justify-content: space-between; gap: 32px; }
+    .stat-value { font-size: 24px; font-weight: 700; color: #111827; }
+    .stat-label { font-size: 14px; color: #6b7280; margin-top: 4px; }
+
+    /* CTAs */
+    .ctas { margin-top: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; background: #16a34a; padding: 14px 28px; font-size: 14px; font-weight: 600; color: #fff; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-primary:hover { background: #15803d; transform: translateY(-1px); }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; border-radius: 8px; border: 1.5px solid #e5e7eb; background: #fff; padding: 14px 28px; font-size: 14px; font-weight: 600; color: #374151; transition: all 0.2s; cursor: pointer; }
+    .btn-secondary:hover { border-color: #86efac; transform: translateY(-1px); }
+
+    .subtext { margin-top: 32px; font-size: 14px; color: #9ca3af; }
+    .demo-link { margin-top: 16px; font-size: 14px; font-weight: 500; color: #16a34a; text-decoration: underline; text-underline-offset: 4px; }
+    .demo-link:hover { color: #15803d; }
+
+    /* Section headers */
+    .section-label { font-size: 14px; font-weight: 600; color: #16a34a; margin-bottom: 8px; }
+    .section-title { font-size: clamp(24px, 3vw, 36px); font-weight: 800; letter-spacing: -0.5px; color: #111827; }
+    .section-desc { margin-top: 12px; color: #6b7280; max-width: 512px; margin-left: auto; margin-right: auto; }
+
+    /* Grid */
+    .grid-4 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .grid-3 { display: grid; gap: 20px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .grid-2 { display: grid; gap: 32px; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+
+    /* Step cards */
+    .step-card { border-radius: 12px; border: 1px solid #e5e7eb; background: #fff; padding: 28px; }
+    .step-num { display: flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 12px; background: #f0fdf4; color: #16a34a; font-weight: 700; font-size: 14px; margin-bottom: 16px; }
+    .step-card h3 { font-weight: 700; color: #111827; margin-bottom: 8px; }
+    .step-card p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+
+    /* Deal cards */
+    .deal-card { border-radius: 12px; border: 1px solid #e5e7eb; background: #f9fafb; padding: 20px; transition: all 0.2s; }
+    .deal-card:hover { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.1); transform: translateY(-2px); }
+    .deal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+    .deal-header h3 { font-weight: 700; color: #111827; }
+    .deal-tags { display: flex; gap: 6px; }
+    .tag { border-radius: 9999px; padding: 2px 10px; font-size: 12px; font-weight: 600; }
+    .tag-preseed { background: #fef3c7; color: #92400e; }
+    .tag-seed { background: #dcfce7; color: #15803d; }
+    .tag-hot { background: #fef2f2; color: #dc2626; }
+    .deal-desc { font-size: 14px; color: #4b5563; margin-bottom: 16px; }
+    .deal-metrics { display: flex; gap: 16px; margin-bottom: 16px; }
+    .deal-metric-label { font-size: 12px; color: #6b7280; }
+    .deal-metric-value { font-size: 12px; font-weight: 600; color: #111827; }
+    .progress-bar { height: 6px; width: 100%; border-radius: 9999px; background: #e5e7eb; margin-bottom: 8px; }
+    .progress-fill { height: 6px; border-radius: 9999px; background: #22c55e; }
+    .deal-footer { display: flex; justify-content: space-between; font-size: 12px; color: #6b7280; }
+
+    /* Comparison */
+    .compare-card { border-radius: 12px; padding: 32px; }
+    .compare-old { border: 1px solid #e5e7eb; background: #fff; }
+    .compare-new { border: 1px solid #bbf7d0; background: rgba(240,253,244,0.3); }
+    .compare-card h3 { font-weight: 700; color: #111827; margin-bottom: 20px; }
+    .compare-item { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; margin-bottom: 12px; }
+    .compare-icon { flex-shrink: 0; width: 20px; height: 20px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-size: 12px; margin-top: 2px; }
+    .icon-red { background: #fef2f2; color: #ef4444; }
+    .icon-green { background: #dcfce7; color: #16a34a; font-weight: 700; }
+    .compare-old .compare-item { color: #6b7280; }
+    .compare-new .compare-item { color: #374151; }
+
+    /* Waitlist cards */
+    .waitlist-grid { display: grid; gap: 24px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); max-width: 768px; margin: 0 auto; }
+    .waitlist-card { border-radius: 12px; border: 1.5px solid #e5e7eb; background: #fff; padding: 32px; padding-top: 0; overflow: hidden; }
+    .waitlist-bar { height: 4px; margin: 0 -32px 32px; }
+    .bar-green { background: #22c55e; }
+    .bar-purple { background: #a855f7; }
+    .waitlist-card h3 { font-size: 18px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+    .waitlist-card .subtitle { font-size: 14px; color: #6b7280; margin-bottom: 24px; }
+    .waitlist-perks { margin-bottom: 24px; }
+    .waitlist-perk { display: flex; align-items: flex-start; gap: 8px; font-size: 14px; color: #4b5563; margin-bottom: 8px; }
+    .perk-check-green { color: #22c55e; margin-top: 2px; }
+    .perk-check-purple { color: #a855f7; margin-top: 2px; }
+    .btn-green { display: block; width: 100%; border-radius: 8px; background: #16a34a; padding: 12px; font-size: 14px; font-weight: 600; color: #fff; text-align: center; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-green:hover { background: #15803d; transform: translateY(-1px); }
+    .btn-purple { display: block; width: 100%; border-radius: 8px; background: #9333ea; padding: 12px; font-size: 14px; font-weight: 600; color: #fff; text-align: center; transition: all 0.2s; border: none; cursor: pointer; }
+    .btn-purple:hover { background: #7e22ce; transform: translateY(-1px); }
+    .waitlist-note { margin-top: 12px; font-size: 12px; color: #9ca3af; text-align: center; }
+
+    /* FAQ */
+    .faq-list { max-width: 700px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px; }
+    .faq-item { border-radius: 12px; border: 1px solid #e5e7eb; background: #fff; padding: 24px; }
+    .faq-item h3 { font-weight: 600; color: #111827; margin-bottom: 8px; }
+    .faq-item p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+
+    /* Footer */
+    .footer { border-top: 1px solid #1f2937; background: #111827; padding: 40px 20px; text-align: center; }
+    .footer-logo { font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .footer-logo span { color: #4ade80; }
+    .footer-tagline { font-size: 12px; color: #9ca3af; margin-bottom: 16px; }
+    .footer-links { display: flex; justify-content: center; gap: 24px; font-size: 12px; color: #6b7280; margin-bottom: 24px; }
+    .footer-links a:hover { color: #fff; }
+    .footer-copy { font-size: 12px; color: #374151; }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .stats { flex-direction: column; align-items: center; gap: 16px; }
+      .ctas { flex-direction: column; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a href="/" class="logo">Round<span>Drop</span></a>
+      <nav class="nav-links">
+        <a href="#how-it-works">How it works</a>
+        <a href="#live-rounds">Live rounds</a>
+        <a href="#join">Join the waitlist</a>
+      </nav>
+      <a href="/sign-up" class="nav-cta">Join the waitlist &rarr;</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="badge">
+        <span class="badge-dot">
+          <span class="badge-dot-pulse"></span>
+          <span class="badge-dot-solid"></span>
+        </span>
+        Launching Q2 2026 &middot; Limited early access
+      </div>
+      <h1>Fundraising should feel like a <span>launch</span>, not a cold call marathon.</h1>
+      <p>RoundDrop is the public launchpad where startups drop their live investment rounds — and investors discover the next big thing before anyone else.</p>
+
+      <div class="stats">
+        <div class="text-center">
+          <div class="stat-value">6+ months</div>
+          <div class="stat-label">Avg time to close pre-seed</div>
+        </div>
+        <div class="text-center">
+          <div class="stat-value">70%</div>
+          <div class="stat-label">Founders cite fundraising as biggest blocker</div>
+        </div>
+        <div class="text-center">
+          <div class="stat-value">1,000s</div>
+          <div class="stat-label">Investors searching for deal flow daily</div>
+        </div>
+      </div>
+
+      <div class="ctas">
+        <a href="/sign-up" class="btn-primary">Drop Your Round</a>
+        <a href="/sign-up" class="btn-secondary">Browse as Investor</a>
+      </div>
+
+      <p class="subtext">Join 200+ founders and investors already on the early access waitlist &middot; New drops every Friday</p>
+      <div style="margin-top:16px"><a href="/demo" class="demo-link">Or try the interactive demo &rarr;</a></div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section id="how-it-works" class="section section-white section-border">
+    <div class="section-inner">
+      <div class="text-center" style="margin-bottom:56px">
+        <p class="section-label">How it works</p>
+        <h2 class="section-title">A launch moment, not a listing</h2>
+      </div>
+      <div class="grid-4">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <h3>Drop your round</h3>
+          <p>Founders upload raise details, valuation, metrics, deck. Goes live weekly.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <h3>Rounds trend up</h3>
+          <p>Investors follow, view, and request intros. Strong signals bubble up the leaderboard.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <h3>Direct intros, instantly</h3>
+          <p>Verified investors request meetings in one click. No gatekeepers.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <h3>Calendar-native booking</h3>
+          <p>Accepted intros go to both calendars in under 60 seconds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live rounds -->
+  <section id="live-rounds" class="section section-white section-border">
+    <div class="section-inner">
+      <div class="text-center" style="margin-bottom:56px">
+        <p class="section-label">Live rounds</p>
+        <h2 class="section-title">See what&rsquo;s dropping</h2>
+        <p class="section-desc">Real rounds from real founders. Browse metrics, traction, and team — then request an intro in one click.</p>
+      </div>
+      <div class="grid-3">
+        <!-- Arcana AI -->
+        <div class="deal-card">
+          <div class="deal-header">
+            <h3>Arcana AI</h3>
+            <div class="deal-tags">
+              <span class="tag tag-preseed">Pre-Seed</span>
+              <span class="tag tag-hot">Closing Friday</span>
+            </div>
+          </div>
+          <p class="deal-desc">AI-native legal research for solo practitioners</p>
+          <div class="deal-metrics">
+            <div><div class="deal-metric-label">MRR</div><div class="deal-metric-value">$42K</div></div>
+            <div><div class="deal-metric-label">Raising</div><div class="deal-metric-value">$1.2M</div></div>
+            <div><div class="deal-metric-label">Growth</div><div class="deal-metric-value">3.8x MoM</div></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:72%"></div></div>
+          <div class="deal-footer"><span>72% filled</span><span>148 follows</span></div>
+        </div>
+        <!-- Vaultic -->
+        <div class="deal-card">
+          <div class="deal-header">
+            <h3>Vaultic</h3>
+            <div class="deal-tags">
+              <span class="tag tag-seed">Seed</span>
+            </div>
+          </div>
+          <p class="deal-desc">Supply chain risk intelligence for mid-market manufacturers</p>
+          <div class="deal-metrics">
+            <div><div class="deal-metric-label">ARR</div><div class="deal-metric-value">$118K</div></div>
+            <div><div class="deal-metric-label">Raising</div><div class="deal-metric-value">$2.5M</div></div>
+            <div><div class="deal-metric-label">Team</div><div class="deal-metric-value">2 ex-Google</div></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
+          <div class="deal-footer"><span>45% filled</span><span>94 follows</span></div>
+        </div>
+        <!-- Nudge Health -->
+        <div class="deal-card">
+          <div class="deal-header">
+            <h3>Nudge Health</h3>
+            <div class="deal-tags">
+              <span class="tag tag-preseed">Pre-Seed</span>
+              <span class="tag tag-hot">Hot</span>
+            </div>
+          </div>
+          <p class="deal-desc">Behavioral nudges that cut patient no-show rates by 60%</p>
+          <div class="deal-metrics">
+            <div><div class="deal-metric-label">Clients</div><div class="deal-metric-value">14 clinics</div></div>
+            <div><div class="deal-metric-label">Raising</div><div class="deal-metric-value">$800K</div></div>
+            <div><div class="deal-metric-label">Impact</div><div class="deal-metric-value">-60% no-shows</div></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:88%"></div></div>
+          <div class="deal-footer"><span>88% filled</span><span>211 follows</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why it's different -->
+  <section class="section section-gray section-border">
+    <div class="section-inner">
+      <div class="text-center" style="margin-bottom:56px">
+        <p class="section-label">Why it&rsquo;s different</p>
+        <h2 class="section-title">Fundraising is broken. We&rsquo;re fixing it.</h2>
+      </div>
+      <div class="grid-2">
+        <div class="compare-card compare-old">
+          <h3>The current way</h3>
+          <div class="compare-item"><span class="compare-icon icon-red">&times;</span> Months of cold outreach with no response</div>
+          <div class="compare-item"><span class="compare-icon icon-red">&times;</span> Outdated investor lists and broken intros</div>
+          <div class="compare-item"><span class="compare-icon icon-red">&times;</span> No signal on investor interest or timeline</div>
+          <div class="compare-item"><span class="compare-icon icon-red">&times;</span> Meeting coordination takes 2 weeks</div>
+          <div class="compare-item"><span class="compare-icon icon-red">&times;</span> Great companies invisible before network established</div>
+        </div>
+        <div class="compare-card compare-new">
+          <h3>The RoundDrop way</h3>
+          <div class="compare-item"><span class="compare-icon icon-green">&#10003;</span> Investor attention within 24 hours of drop</div>
+          <div class="compare-item"><span class="compare-icon icon-green">&#10003;</span> Verified, active investors browse weekly</div>
+          <div class="compare-item"><span class="compare-icon icon-green">&#10003;</span> Real-time follow counts show live interest</div>
+          <div class="compare-item"><span class="compare-icon icon-green">&#10003;</span> One-click calendar-native booking</div>
+          <div class="compare-item"><span class="compare-icon icon-green">&#10003;</span> Traction-first ranking system</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Join / Waitlist -->
+  <section id="join" class="section section-white section-border">
+    <div class="section-inner">
+      <div class="text-center" style="margin-bottom:56px">
+        <p class="section-label">Join the waitlist</p>
+        <h2 class="section-title">Get early access</h2>
+        <p class="section-desc">Limited to 10 founders and 50 investors in the first cohort.</p>
+      </div>
+      <div class="waitlist-grid">
+        <!-- Founder -->
+        <div class="waitlist-card">
+          <div class="waitlist-bar bar-green"></div>
+          <h3>I&rsquo;m Raising</h3>
+          <p class="subtitle">Drop your round to verified investors</p>
+          <ul class="waitlist-perks">
+            <li class="waitlist-perk"><span class="perk-check-green">&#10003;</span> Access to 50+ verified investors on day one</li>
+            <li class="waitlist-perk"><span class="perk-check-green">&#10003;</span> Featured placement in launch week drops</li>
+            <li class="waitlist-perk"><span class="perk-check-green">&#10003;</span> Real-time follow tracking and investor signals</li>
+            <li class="waitlist-perk"><span class="perk-check-green">&#10003;</span> Calendar-native intro scheduling</li>
+          </ul>
+          <a href="/sign-up" class="btn-green">Apply for First Drop &rarr;</a>
+          <p class="waitlist-note">Free to apply. No credit card. Limited spots in Q2 cohort.</p>
+        </div>
+        <!-- Investor -->
+        <div class="waitlist-card">
+          <div class="waitlist-bar bar-purple"></div>
+          <h3>I&rsquo;m Investing</h3>
+          <p class="subtitle">Get curated deal flow every week</p>
+          <ul class="waitlist-perks">
+            <li class="waitlist-perk"><span class="perk-check-purple">&#10003;</span> Weekly curated deal flow drops</li>
+            <li class="waitlist-perk"><span class="perk-check-purple">&#10003;</span> Full metrics before requesting intro</li>
+            <li class="waitlist-perk"><span class="perk-check-purple">&#10003;</span> One-click meeting booking</li>
+            <li class="waitlist-perk"><span class="perk-check-purple">&#10003;</span> Trending sector signals and deal data</li>
+          </ul>
+          <a href="/sign-up" class="btn-purple">Get Early Investor Access &rarr;</a>
+          <p class="waitlist-note">Free to join. Verification required before round access.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section section-gray section-border">
+    <div class="section-inner">
+      <h2 class="section-title text-center" style="margin-bottom:40px">Frequently asked questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <h3>Is RoundDrop free?</h3>
+          <p>Free for founders. Investors get free basic access with premium features available for a subscription.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How is this different from AngelList or a pitch deck database?</h3>
+          <p>RoundDrop creates exclusivity and urgency. Rounds drop weekly like a launch, not a static listing. Think Product Hunt for fundraising.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How are investors verified?</h3>
+          <p>We verify via fund pages, LinkedIn, and investment history before granting access to rounds.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Can investors see my full deck just by browsing?</h3>
+          <p>Follows show interest. Accessing your full deck and requesting an intro requires explicit action — you stay in control.</p>
+        </div>
+        <div class="faq-item">
+          <h3>When does RoundDrop launch?</h3>
+          <p>Q2 2026. The first cohort is limited to 10 founders and 50 investors.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p class="footer-logo">Round<span>Drop</span></p>
+    <p class="footer-tagline">The launchpad for investment rounds.</p>
+    <div class="footer-links">
+      <a href="#how-it-works">How it works</a>
+      <a href="#join">Apply</a>
+      <a href="mailto:hello@rounddrop.co">hello@rounddrop.co</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 RoundDrop. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

@@ -18,6 +18,9 @@ export type Database = {
           avatar_url: string | null;
           linkedin_url: string | null;
           onboarding_completed: boolean;
+          is_verified: boolean;
+          verified_at: string | null;
+          verification_source: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -29,6 +32,9 @@ export type Database = {
           avatar_url?: string | null;
           linkedin_url?: string | null;
           onboarding_completed?: boolean;
+          is_verified?: boolean;
+          verified_at?: string | null;
+          verification_source?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -40,8 +46,34 @@ export type Database = {
           avatar_url?: string | null;
           linkedin_url?: string | null;
           onboarding_completed?: boolean;
+          is_verified?: boolean;
+          verified_at?: string | null;
+          verification_source?: string | null;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      platform_connections: {
+        Row: {
+          id: string;
+          profile_a_id: string;
+          profile_b_id: string;
+          source: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_a_id: string;
+          profile_b_id: string;
+          source?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_a_id?: string;
+          profile_b_id?: string;
+          source?: string | null;
+          created_at?: string;
         };
       };
       founder_profiles: {
@@ -55,6 +87,20 @@ export type Database = {
           calendar_link: string | null;
           accelerator_affiliations: string[] | null;
           stage: string | null;
+          full_name: string | null;
+          email: string | null;
+          linkedin_url: string | null;
+          year_founded: number | null;
+          description: string | null;
+          mrr: number | null;
+          arr: number | null;
+          traction_notes: string | null;
+          growth_numbers: Json;
+          intro_video_url: string | null;
+          onepager_url: string | null;
+          pitch_deck_url: string | null;
+          best_contact_method: string | null;
+          slug: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -68,6 +114,20 @@ export type Database = {
           calendar_link?: string | null;
           accelerator_affiliations?: string[] | null;
           stage?: string | null;
+          full_name?: string | null;
+          email?: string | null;
+          linkedin_url?: string | null;
+          year_founded?: number | null;
+          description?: string | null;
+          mrr?: number | null;
+          arr?: number | null;
+          traction_notes?: string | null;
+          growth_numbers?: Json;
+          intro_video_url?: string | null;
+          onepager_url?: string | null;
+          pitch_deck_url?: string | null;
+          best_contact_method?: string | null;
+          slug?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -81,6 +141,20 @@ export type Database = {
           calendar_link?: string | null;
           accelerator_affiliations?: string[] | null;
           stage?: string | null;
+          full_name?: string | null;
+          email?: string | null;
+          linkedin_url?: string | null;
+          year_founded?: number | null;
+          description?: string | null;
+          mrr?: number | null;
+          arr?: number | null;
+          traction_notes?: string | null;
+          growth_numbers?: Json;
+          intro_video_url?: string | null;
+          onepager_url?: string | null;
+          pitch_deck_url?: string | null;
+          best_contact_method?: string | null;
+          slug?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -105,8 +179,14 @@ export type Database = {
           contact_email: string | null;
           fund_domain: string | null;
           slug: string | null;
-          claim_token: string | null;
           claimed_at: string | null;
+          location: string | null;
+          linkedin_url: string | null;
+          years_investing: number | null;
+          main_markets: string[] | null;
+          recent_checks: Json;
+          deck_criteria: string | null;
+          founder_assessment: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -129,8 +209,14 @@ export type Database = {
           contact_email?: string | null;
           fund_domain?: string | null;
           slug?: string | null;
-          claim_token?: string | null;
           claimed_at?: string | null;
+          location?: string | null;
+          linkedin_url?: string | null;
+          years_investing?: number | null;
+          main_markets?: string[] | null;
+          recent_checks?: Json;
+          deck_criteria?: string | null;
+          founder_assessment?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -153,8 +239,14 @@ export type Database = {
           contact_email?: string | null;
           fund_domain?: string | null;
           slug?: string | null;
-          claim_token?: string | null;
           claimed_at?: string | null;
+          location?: string | null;
+          linkedin_url?: string | null;
+          years_investing?: number | null;
+          main_markets?: string[] | null;
+          recent_checks?: Json;
+          deck_criteria?: string | null;
+          founder_assessment?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -402,6 +494,111 @@ export type Database = {
           notes?: string | null;
           created_at?: string;
           updated_at?: string;
+        };
+      };
+      user_connections: {
+        Row: {
+          id: string;
+          profile_id: string;
+          linkedin_url: string;
+          full_name: string | null;
+          headline: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          profile_id: string;
+          linkedin_url: string;
+          full_name?: string | null;
+          headline?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          profile_id?: string;
+          linkedin_url?: string;
+          full_name?: string | null;
+          headline?: string | null;
+          created_at?: string;
+        };
+      };
+      events: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          event_type: "virtual" | "irl" | "hybrid" | null;
+          location: string | null;
+          url: string | null;
+          starts_at: string;
+          ends_at: string | null;
+          audience: "founder" | "investor" | "both";
+          cover_image_url: string | null;
+          is_featured: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          event_type?: "virtual" | "irl" | "hybrid" | null;
+          location?: string | null;
+          url?: string | null;
+          starts_at: string;
+          ends_at?: string | null;
+          audience?: "founder" | "investor" | "both";
+          cover_image_url?: string | null;
+          is_featured?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          event_type?: "virtual" | "irl" | "hybrid" | null;
+          location?: string | null;
+          url?: string | null;
+          starts_at?: string;
+          ends_at?: string | null;
+          audience?: "founder" | "investor" | "both";
+          cover_image_url?: string | null;
+          is_featured?: boolean;
+          created_at?: string;
+        };
+      };
+      resources: {
+        Row: {
+          id: string;
+          title: string;
+          description: string | null;
+          category: "deck_template" | "fundraising" | "term_sheet" | "legal" | "hiring" | "growth" | "other" | null;
+          url: string;
+          audience: "founder" | "investor" | "both";
+          cover_image_url: string | null;
+          is_featured: boolean;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          title: string;
+          description?: string | null;
+          category?: "deck_template" | "fundraising" | "term_sheet" | "legal" | "hiring" | "growth" | "other" | null;
+          url: string;
+          audience?: "founder" | "investor" | "both";
+          cover_image_url?: string | null;
+          is_featured?: boolean;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          title?: string;
+          description?: string | null;
+          category?: "deck_template" | "fundraising" | "term_sheet" | "legal" | "hiring" | "growth" | "other" | null;
+          url?: string;
+          audience?: "founder" | "investor" | "both";
+          cover_image_url?: string | null;
+          is_featured?: boolean;
+          created_at?: string;
         };
       };
       notifications: {

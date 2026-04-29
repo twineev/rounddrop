@@ -6,6 +6,12 @@
       "runtimeExecutable": "./scripts/dev.sh",
       "runtimeArgs": [],
       "port": 3000
+    },
+    {
+      "name": "preview-mockup",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server"],
+      "autoPort": true
     }
   ]
 }

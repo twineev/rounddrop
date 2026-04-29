@@ -13,6 +13,9 @@ import {
   Bookmark,
   Building2,
   Target,
+  Calendar,
+  BookOpen,
+  Network,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -23,6 +26,9 @@ const founderNav = [
   { href: "/rounds", label: "My Rounds", icon: Rocket },
   { href: "/investors", label: "Investors", icon: Building2 },
   { href: "/pipeline", label: "Pipeline", icon: Target },
+  { href: "/events", label: "Events", icon: Calendar },
+  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/connections", label: "Connections", icon: Network },
   { href: "/messages", label: "Messages", icon: MessageSquare },
   { href: "/notifications", label: "Notifications", icon: Bell },
   { href: "/profile", label: "Profile", icon: User },
@@ -32,6 +38,9 @@ const investorNav = [
   { href: "/deals", label: "Deal Feed", icon: LayoutDashboard },
   { href: "/watchlist", label: "Watchlist", icon: Bookmark },
   { href: "/portfolio", label: "Portfolio", icon: Briefcase },
+  { href: "/events", label: "Events", icon: Calendar },
+  { href: "/resources", label: "Resources", icon: BookOpen },
+  { href: "/connections", label: "Connections", icon: Network },
   { href: "/messages", label: "Messages", icon: MessageSquare },
   { href: "/notifications", label: "Notifications", icon: Bell },
   { href: "/profile", label: "Profile", icon: User },
