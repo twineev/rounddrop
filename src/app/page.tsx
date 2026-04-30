@@ -160,13 +160,21 @@ export default function LandingPage() {
               Join the waitlist
             </a>
           </div>
-          <a
-            href="/onboarding"
-            className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-105 hover:-translate-y-px"
-            style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
-          >
-            Join the waitlist &rarr;
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href="/sign-in"
+              className="rounded-lg border-[1.5px] border-gray-200 bg-white px-4 py-2 text-sm font-semibold text-gray-700 transition-all hover:border-gray-300 hover:-translate-y-px"
+            >
+              Log in
+            </a>
+            <a
+              href="/onboarding"
+              className="rounded-lg px-4 py-2 text-sm font-medium text-white transition-all hover:brightness-105 hover:-translate-y-px"
+              style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}
+            >
+              Join the waitlist &rarr;
+            </a>
+          </div>
         </div>
       </header>
 
