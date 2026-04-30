@@ -7,11 +7,13 @@ import {
   Briefcase, Users, Building2, MessageSquare, Bell, User, Calendar, BookOpen,
   ShieldCheck, Plus, Download, Eye, Send, UserPlus, Star, Sparkles, Link2,
   TrendingUp, Flame, ExternalLink, Upload, MapPin, Video, FileText,
+  Layers, CheckCircle2, AlertCircle, Clock, FileSignature,
 } from "lucide-react";
 
 const TABS = [
   { id: "investments", label: "My Investments", Icon: Briefcase },
   { id: "deals", label: "Deal Feed", Icon: TrendingUp },
+  { id: "spvs", label: "SPVs", Icon: Layers, badge: 3 },
   { id: "profile", label: "Profile", Icon: User },
   { id: "connections", label: "Connections", Icon: Users },
   { id: "messages", label: "Messages", Icon: MessageSquare, badge: 3 },
@@ -76,6 +78,7 @@ export default function InvestorDemo() {
       <main className="flex-1 min-w-0 p-5 md:p-7 mt-12 md:mt-0">
         {tab === "investments" && <InvestmentsView />}
         {tab === "deals" && <DealsView />}
+        {tab === "spvs" && <SpvsView />}
         {tab === "profile" && <ProfileView />}
         {tab === "connections" && <ConnectionsView />}
         {tab === "messages" && <MessagesView />}
@@ -444,3 +447,240 @@ function ResourcesView() {
     </div>
   );
 }
+
+// ==========================================================================
+// SPVs (investor view)
+// ==========================================================================
+function SpvsView() {
+  const [selectedSpv, setSelectedSpv] = useState(0);
+  const spvs = [
+    {
+      id: 0,
+      company: "Tavita Health",
+      stage: "Seed",
+      target: 500_000,
+      committed: 387_000,
+      lpCount: 14,
+      wired: 9,
+      pending: 5,
+      closingIn: 12,
+      status: "Closing soon",
+      gradient: "linear-gradient(135deg, #E8C026, #50C878)",
+    },
+    {
+      id: 1,
+      company: "Lumen Models",
+      stage: "Seed",
+      target: 750_000,
+      committed: 250_000,
+      lpCount: 8,
+      wired: 3,
+      pending: 5,
+      closingIn: 28,
+      status: "Building",
+      gradient: "linear-gradient(135deg, #2E6BAD, #5BA4E6)",
+    },
+    {
+      id: 2,
+      company: "CapTable.io (follow-on)",
+      stage: "Series A",
+      target: 250_000,
+      committed: 250_000,
+      lpCount: 11,
+      wired: 11,
+      pending: 0,
+      closingIn: 0,
+      status: "Closed",
+      gradient: "linear-gradient(135deg, #2A9D5C, #7EDDA0)",
+    },
+  ];
+  const totalRaised = spvs.reduce((s, x) => s + x.committed, 0);
+  const totalTarget = spvs.reduce((s, x) => s + x.target, 0);
+  const totalLPs = spvs.reduce((s, x) => s + x.lpCount, 0);
+  const wired = spvs.reduce((s, x) => s + x.wired, 0);
+  const wireRate = totalLPs > 0 ? (wired / totalLPs) * 100 : 0;
+
+  const lps = [
+    { name: "Acme Family Office", amount: 100_000, status: "wired", date: "Apr 18", signed: true },
+    { name: "Sequoia Scout (Anand R.)", amount: 50_000, status: "wired", date: "Apr 16", signed: true },
+    { name: "Ravi Mehta", amount: 25_000, status: "wired", date: "Apr 15", signed: true },
+    { name: "Maya Carlson", amount: 25_000, status: "wired", date: "Apr 15", signed: true },
+    { name: "Lighthouse Ventures", amount: 75_000, status: "wired", date: "Apr 12", signed: true },
+    { name: "Rohan Gupta", amount: 25_000, status: "wired", date: "Apr 11", signed: true },
+    { name: "Northstar Holdings", amount: 50_000, status: "wired", date: "Apr 10", signed: true },
+    { name: "Kim Patel", amount: 10_000, status: "wired", date: "Apr 9", signed: true },
+    { name: "Bay Capital LLC", amount: 50_000, status: "signed", date: "Apr 21", signed: true },
+    { name: "Jonas Park", amount: 10_000, status: "signed", date: "Apr 20", signed: true },
+    { name: "Vista Family Trust", amount: 25_000, status: "signed", date: "Apr 19", signed: true },
+    { name: "Aria Chen", amount: 10_000, status: "pending", date: "—", signed: false },
+    { name: "Daniel Wu", amount: 25_000, status: "pending", date: "—", signed: false },
+    { name: "Olivia Reyes", amount: 32_000, status: "overdue", date: "Apr 14", signed: true },
+  ];
+
+  const sel = spvs[selectedSpv];
+  const pct = (sel.committed / sel.target) * 100;
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-start justify-between flex-wrap gap-3">
+        <div>
+          <p className="text-sm font-semibold mb-1" style={{ color: "#E8C026" }}>SPVs</p>
+          <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#0F1A2E" }}>Syndicate management</h1>
+          <p className="text-sm text-gray-500 mt-1">Track LP commits, wires, and sub docs across every SPV you run.</p>
+        </div>
+        <div className="flex gap-2">
+          <button onClick={demo("send LP update across all SPVs")} className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700">
+            <Send className="h-3.5 w-3.5" /> Send LP update
+          </button>
+          <button onClick={demo("create a new SPV")} className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white" style={{ background: "linear-gradient(135deg, #E8C026, #50C878)" }}>
+            <Plus className="h-3.5 w-3.5" /> New SPV
+          </button>
+        </div>
+      </div>
+
+      {/* KPIs */}
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+        <Kpi label="Active SPVs" value={`${spvs.filter(s => s.status !== "Closed").length}`} sub={`${spvs.length} total`} />
+        <Kpi label="Capital tracked" value={fmt(totalRaised)} sub={`of ${fmt(totalTarget)} target`} />
+        <Kpi label="Total LPs" value={`${totalLPs}`} sub="+4 this week" color="#2A9D5C" />
+        <Kpi label="Wire success rate" value={`${wireRate.toFixed(0)}%`} sub={`${wired} of ${totalLPs} wired`} color="#2A9D5C" />
+        <Kpi label="SPV fees due" value="$1,497" sub="3 SPVs × $499" color="#D4A017" />
+      </div>
+
+      {/* SPV list + detail */}
+      <div className="grid gap-4 lg:grid-cols-[340px_1fr]">
+        {/* Left: SPV list */}
+        <div className="space-y-3">
+          {spvs.map((s, i) => (
+            <button key={s.id} onClick={() => setSelectedSpv(i)} className="w-full text-left rounded-xl border bg-white p-4 transition-all"
+              style={selectedSpv === i ? { borderColor: "#50C878", borderWidth: 2, boxShadow: "0 4px 12px rgba(80,200,120,0.12)" } : { borderColor: "#e5e7eb" }}>
+              <div className="flex items-start gap-3">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl text-white font-bold text-xs shrink-0" style={{ background: s.gradient }}>
+                  {s.company.split(" ").map(w => w[0]).slice(0, 2).join("")}
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-bold truncate" style={{ color: "#0F1A2E" }}>{s.company}</p>
+                  <p className="text-[11px] text-gray-500">{s.stage} SPV · {s.lpCount} LPs</p>
+                </div>
+                <span className="rounded-full px-2 py-0.5 text-[10px] font-bold whitespace-nowrap"
+                  style={
+                    s.status === "Closed" ? { background: "#f3f4f6", color: "#4b5563" }
+                    : s.status === "Closing soon" ? { background: "rgba(232,192,38,0.15)", color: "#D4A017" }
+                    : { background: "rgba(46,107,173,0.1)", color: "#2E6BAD" }
+                  }>
+                  {s.status}
+                </span>
+              </div>
+              <div className="mt-3 h-1.5 rounded-full bg-gray-100 overflow-hidden">
+                <div className="h-full rounded-full" style={{ width: `${(s.committed / s.target) * 100}%`, background: "linear-gradient(90deg, #E8C026, #50C878)" }} />
+              </div>
+              <div className="flex justify-between text-[11px] mt-1.5">
+                <span className="font-semibold" style={{ color: "#0F1A2E" }}>{fmt(s.committed)}</span>
+                <span className="text-gray-500">of {fmt(s.target)}</span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Right: Selected SPV detail */}
+        <div className="space-y-4">
+          {/* Header card */}
+          <div className="rounded-xl border border-gray-200 bg-white p-5">
+            <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-xl text-white font-bold text-base" style={{ background: sel.gradient }}>
+                  {sel.company.split(" ").map(w => w[0]).slice(0, 2).join("")}
+                </div>
+                <div>
+                  <h2 className="text-lg font-extrabold" style={{ color: "#0F1A2E" }}>{sel.company} SPV</h2>
+                  <p className="text-xs text-gray-500">{sel.stage} · {sel.closingIn > 0 ? `${sel.closingIn} days to close` : "Closed"}</p>
+                </div>
+              </div>
+              <div className="flex gap-2">
+                <button onClick={demo(`route ${sel.company} sub docs via DocuSign`)} className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700">
+                  <FileSignature className="h-3.5 w-3.5" /> Send sub docs
+                </button>
+                <button onClick={demo(`compose LP update for ${sel.company}`)} className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-white" style={{ background: "#2E6BAD" }}>
+                  <Send className="h-3.5 w-3.5" /> LP update
+                </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-4 gap-3 mb-4">
+              <div><p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Target</p><p className="text-base font-extrabold" style={{ color: "#0F1A2E" }}>{fmt(sel.target)}</p></div>
+              <div><p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Committed</p><p className="text-base font-extrabold" style={{ color: "#0F1A2E" }}>{fmt(sel.committed)}</p></div>
+              <div><p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Wired</p><p className="text-base font-extrabold" style={{ color: "#2A9D5C" }}>{sel.wired}/{sel.lpCount}</p></div>
+              <div><p className="text-[10px] uppercase tracking-wider font-bold text-gray-500">Filled</p><p className="text-base font-extrabold" style={{ color: "#0F1A2E" }}>{Math.round(pct)}%</p></div>
+            </div>
+
+            <div className="h-3 rounded-full bg-gray-100 overflow-hidden relative">
+              <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, #E8C026, #50C878)" }} />
+            </div>
+          </div>
+
+          {/* LP roster + wire tracker */}
+          <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+            <div className="flex items-center justify-between p-4 border-b border-gray-200">
+              <div>
+                <h3 className="text-sm font-bold" style={{ color: "#0F1A2E" }}>LP roster</h3>
+                <p className="text-[11px] text-gray-500 mt-0.5">{sel.lpCount} LPs · {sel.wired} wired · {sel.pending} pending · 1 overdue</p>
+              </div>
+              <button onClick={demo(`add LP to ${sel.company}`)} className="inline-flex items-center gap-1.5 rounded-lg border-[1.5px] border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700">
+                <Plus className="h-3.5 w-3.5" /> Add LP
+              </button>
+            </div>
+            <div className="hidden md:grid grid-cols-[2fr_120px_120px_100px_80px] gap-3 px-4 py-2.5 bg-gray-50 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+              <div>LP</div><div>Amount</div><div>Sub doc</div><div>Wire</div><div></div>
+            </div>
+            {lps.map((lp, i) => {
+              const statusUI =
+                lp.status === "wired" ? { label: "Wired", bg: "rgba(80,200,120,0.12)", color: "#2A9D5C", Icon: CheckCircle2 } :
+                lp.status === "signed" ? { label: "Signed", bg: "rgba(46,107,173,0.1)", color: "#2E6BAD", Icon: Clock } :
+                lp.status === "overdue" ? { label: "Overdue", bg: "#fef2f2", color: "#dc2626", Icon: AlertCircle } :
+                { label: "Pending", bg: "#f3f4f6", color: "#6b7280", Icon: Clock };
+              return (
+                <div key={i} className="grid grid-cols-1 md:grid-cols-[2fr_120px_120px_100px_80px] gap-3 px-4 py-3 items-center text-sm border-b border-gray-100 last:border-0">
+                  <div>
+                    <p className="font-bold" style={{ color: "#0F1A2E" }}>{lp.name}</p>
+                    <p className="text-[11px] text-gray-500">{lp.signed ? "Signed Apr 14" : "Awaiting signature"}</p>
+                  </div>
+                  <div className="text-sm font-extrabold" style={{ color: "#0F1A2E" }}>{fmt(lp.amount)}</div>
+                  <div>
+                    {lp.signed ? <span className="inline-flex items-center gap-1 text-[11px] font-semibold" style={{ color: "#2A9D5C" }}><CheckCircle2 className="h-3 w-3" /> Signed</span>
+                      : <button onClick={demo(`send sub docs to ${lp.name}`)} className="text-[11px] font-semibold underline" style={{ color: "#2E6BAD" }}>Send docs</button>}
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-semibold" style={{ background: statusUI.bg, color: statusUI.color }}>
+                      <statusUI.Icon className="h-3 w-3" />
+                      {statusUI.label}
+                    </span>
+                  </div>
+                  <button onClick={demo(`message ${lp.name}`)} className="text-[11px] font-semibold" style={{ color: "#2E6BAD" }}>Message</button>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* LP update history */}
+          <div className="rounded-xl border border-gray-200 bg-white p-4">
+            <h3 className="text-sm font-bold mb-3" style={{ color: "#0F1A2E" }}>LP update history</h3>
+            {[
+              { title: "Tavita: Q1 milestone hit · 8 wires received", t: "Apr 18", opens: "12 of 14 opened" },
+              { title: "Sub docs reminder for 3 outstanding LPs", t: "Apr 14", opens: "3 of 3 opened" },
+              { title: "SPV launched — terms + timeline", t: "Apr 7", opens: "14 of 14 opened" },
+            ].map((u, i) => (
+              <div key={i} className="flex items-start gap-3 py-2.5 border-b border-gray-100 last:border-0">
+                <Send className="h-3.5 w-3.5 mt-0.5 shrink-0" style={{ color: "#2E6BAD" }} />
+                <div className="flex-1">
+                  <p className="text-sm font-semibold" style={{ color: "#0F1A2E" }}>{u.title}</p>
+                  <p className="text-[11px] text-gray-500 mt-0.5">{u.t} · {u.opens}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+

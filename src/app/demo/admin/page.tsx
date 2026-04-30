@@ -7,10 +7,10 @@ import {
   LayoutDashboard, Users, Building2, Rocket, Send, MessageSquare, Calendar,
   BookOpen, ShieldCheck, DollarSign, TrendingUp, TrendingDown, Eye,
   ArrowUpRight, Activity, Zap, AlertCircle, Database, FileText,
-  CheckCircle2, Clock, Filter,
+  CheckCircle2, Clock, Filter, Layers,
 } from "lucide-react";
 
-type Tab = "overview" | "users" | "investors" | "events" | "resources" | "payments" | "engagement";
+type Tab = "overview" | "users" | "investors" | "spvs" | "events" | "resources" | "payments" | "engagement";
 
 const demo = (label: string) => () => toast(`Demo mode — would ${label}`, { description: "This is a demo admin dashboard." });
 
@@ -38,6 +38,7 @@ export default function DemoAdminPage() {
           <NavItem id="overview" label="Overview" icon={LayoutDashboard} tab={tab} setTab={setTab} />
           <NavItem id="users" label="Users" icon={Users} tab={tab} setTab={setTab} count={1247} />
           <NavItem id="investors" label="Investors" icon={Building2} tab={tab} setTab={setTab} count={342} />
+          <NavItem id="spvs" label="SPVs" icon={Layers} tab={tab} setTab={setTab} count={47} />
           <NavItem id="payments" label="Payments" icon={DollarSign} tab={tab} setTab={setTab} />
           <NavItem id="engagement" label="Engagement" icon={Activity} tab={tab} setTab={setTab} />
           <NavItem id="events" label="Events" icon={Calendar} tab={tab} setTab={setTab} count={12} />
@@ -61,7 +62,7 @@ export default function DemoAdminPage() {
 
       {/* Mobile tab bar */}
       <div className="md:hidden fixed top-[44px] left-0 right-0 z-40 flex gap-2 overflow-x-auto bg-white border-b border-gray-200 px-3 py-2">
-        {(["overview", "users", "investors", "payments", "engagement", "events", "resources"] as Tab[]).map((t) => (
+        {(["overview", "users", "investors", "spvs", "payments", "engagement", "events", "resources"] as Tab[]).map((t) => (
           <button key={t} onClick={() => setTab(t)} className="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap"
             style={tab === t ? { background: "#0F1A2E", color: "#fff" } : { background: "#f3f4f6", color: "#6b7280" }}>
             {t[0].toUpperCase() + t.slice(1)}
@@ -74,6 +75,7 @@ export default function DemoAdminPage() {
         {tab === "overview" && <OverviewView />}
         {tab === "users" && <UsersView />}
         {tab === "investors" && <InvestorsView />}
+        {tab === "spvs" && <SpvsView />}
         {tab === "payments" && <PaymentsView />}
         {tab === "engagement" && <EngagementView />}
         {tab === "events" && <EventsView />}
@@ -142,6 +144,10 @@ function OverviewView() {
         <Kpi label="ARR" value="$388K" sub="86% gross margin" icon={TrendingUp} />
         <Kpi label="Decks shared" value="2,184" sub="+412 last 7 days" color="#2A9D5C" trend="up" icon={Send} />
         <Kpi label="Avg deck open rate" value="68%" sub="vs 24% via cold email" color="#2A9D5C" icon={Eye} />
+        <Kpi label="Active SPVs" value="47" sub="+11 this month" color="#2A9D5C" trend="up" icon={Layers} />
+        <Kpi label="LP capital tracked" value="$8.4M" sub="across 47 SPVs" icon={DollarSign} />
+        <Kpi label="SPV revenue (a la carte)" value="$23.5K" sub="47 × $499" color="#2A9D5C" icon={DollarSign} />
+        <Kpi label="Wire success rate" value="84%" sub="industry avg ~70%" color="#2A9D5C" icon={CheckCircle2} />
       </div>
 
       {/* Growth chart */}
@@ -595,6 +601,183 @@ function ResourcesView() {
             <div className="text-sm font-bold" style={{ color: "#0F1A2E" }}>{r.views.toLocaleString()}</div>
             <div className="text-sm text-gray-600">{r.downloads > 0 ? r.downloads.toLocaleString() : "—"}</div>
             <button onClick={demo(`edit ${r.title}`)} className="text-xs font-semibold" style={{ color: "#2E6BAD" }}>Edit</button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ==========================================================================
+function SpvsView() {
+  const spvs = [
+    { operator: "Summit Seed Capital", co: "Tavita Health", target: 500_000, committed: 387_000, lps: 14, wired: 9, status: "Closing", days: 12, fee: 499 },
+    { operator: "Wischoff Ventures", co: "Lumen Models", target: 750_000, committed: 250_000, lps: 8, wired: 3, status: "Building", days: 28, fee: 499 },
+    { operator: "Summit Seed Capital", co: "CapTable.io", target: 250_000, committed: 250_000, lps: 11, wired: 11, status: "Closed", days: 0, fee: 499 },
+    { operator: "Weekend Fund", co: "Slate Protocol", target: 500_000, committed: 425_000, lps: 17, wired: 14, status: "Closing", days: 6, fee: 499 },
+    { operator: "1517 Fund Scout", co: "Arcadia Labs", target: 350_000, committed: 350_000, lps: 9, wired: 9, status: "Closed", days: 0, fee: 499 },
+    { operator: "Hustle Fund Scout", co: "BalconyHQ", target: 200_000, committed: 145_000, lps: 12, wired: 7, status: "Building", days: 21, fee: 499 },
+    { operator: "Soma Capital Scout", co: "Vaultic Supply", target: 400_000, committed: 380_000, lps: 16, wired: 13, status: "Closing", days: 4, fee: 499 },
+  ];
+  const totalLPs = spvs.reduce((s, x) => s + x.lps, 0);
+  const totalWired = spvs.reduce((s, x) => s + x.wired, 0);
+  const totalCommitted = spvs.reduce((s, x) => s + x.committed, 0);
+  const totalTarget = spvs.reduce((s, x) => s + x.target, 0);
+  const wireRate = totalLPs > 0 ? (totalWired / totalLPs) * 100 : 0;
+
+  const topOperators = [
+    { name: "Summit Seed Capital", spvs: 6, raised: 1_847_000, lps: 64 },
+    { name: "Weekend Fund", spvs: 5, raised: 1_250_000, lps: 52 },
+    { name: "Wischoff Ventures", spvs: 4, raised: 980_000, lps: 38 },
+    { name: "Hustle Fund Scout", spvs: 4, raised: 720_000, lps: 41 },
+    { name: "Soma Capital Scout", spvs: 3, raised: 950_000, lps: 33 },
+  ];
+
+  return (
+    <div className="space-y-5">
+      <div className="flex items-end justify-between flex-wrap gap-3">
+        <div>
+          <p className="text-sm font-semibold mb-1" style={{ color: "#E8C026" }}>Admin · SPVs</p>
+          <h1 className="text-2xl font-extrabold tracking-tight" style={{ color: "#0F1A2E" }}>Special Purpose Vehicles</h1>
+          <p className="text-sm text-gray-500 mt-1">Per-deal syndicate tracking. {spvs.filter(s => s.status !== "Closed").length} active SPVs across {topOperators.length} operators.</p>
+        </div>
+        <button onClick={demo("export SPV roster CSV")} className="rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700">Export</button>
+      </div>
+
+      {/* KPI strip */}
+      <div className="grid gap-3 grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+        <Kpi label="Active SPVs" value={`${spvs.filter(s => s.status !== "Closed").length}`} sub={`${spvs.length} all-time`} icon={Layers} />
+        <Kpi label="LP capital tracked" value="$8.4M" sub={`avg ${fmt(totalCommitted / spvs.length)}/SPV`} icon={DollarSign} />
+        <Kpi label="Total LPs" value={`${totalLPs}`} sub="+18 this month" color="#2A9D5C" trend="up" icon={Users} />
+        <Kpi label="SPV revenue" value="$23.5K" sub="47 × $499 a la carte" color="#2A9D5C" icon={DollarSign} />
+        <Kpi label="Wire success rate" value={`${wireRate.toFixed(0)}%`} sub="industry avg ~70%" color="#2A9D5C" icon={CheckCircle2} />
+        <Kpi label="Avg SPV size" value={fmt(totalCommitted / spvs.length)} sub="median $325K" />
+      </div>
+
+      <div className="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
+        {/* SPV table */}
+        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+          <div className="flex items-center justify-between p-4 border-b border-gray-200">
+            <div>
+              <h2 className="text-base font-bold" style={{ color: "#0F1A2E" }}>All SPVs</h2>
+              <p className="text-xs text-gray-500 mt-0.5">{spvs.length} total · {spvs.filter(s => s.status === "Closing").length} closing this week</p>
+            </div>
+          </div>
+          <div className="hidden md:grid grid-cols-[1.5fr_1fr_120px_80px_100px] gap-3 px-4 py-2.5 bg-gray-50 text-[10px] font-bold uppercase tracking-wider text-gray-500">
+            <div>Operator · Company</div><div>Committed / Target</div><div>LPs</div><div>Wired</div><div>Status</div>
+          </div>
+          {spvs.map((s, i) => {
+            const pct = (s.committed / s.target) * 100;
+            return (
+              <button key={i} onClick={demo(`open SPV detail for ${s.co}`)} className="w-full text-left grid grid-cols-1 md:grid-cols-[1.5fr_1fr_120px_80px_100px] gap-3 px-4 py-3 items-center text-sm border-b border-gray-100 last:border-0 hover:bg-gray-50">
+                <div>
+                  <p className="font-bold" style={{ color: "#0F1A2E" }}>{s.co}</p>
+                  <p className="text-[11px] text-gray-500">{s.operator}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-bold" style={{ color: "#0F1A2E" }}>{fmt(s.committed)} <span className="text-[11px] font-normal text-gray-500">/ {fmt(s.target)}</span></p>
+                  <div className="h-1 rounded-full bg-gray-100 mt-1 overflow-hidden">
+                    <div className="h-full rounded-full" style={{ width: `${pct}%`, background: "linear-gradient(90deg, #E8C026, #50C878)" }} />
+                  </div>
+                </div>
+                <div className="text-sm font-bold" style={{ color: "#0F1A2E" }}>{s.lps}</div>
+                <div className="text-sm">
+                  <span style={{ color: s.wired === s.lps ? "#2A9D5C" : "#0F1A2E" }} className="font-bold">{s.wired}</span>
+                  <span className="text-[11px] text-gray-500">/{s.lps}</span>
+                </div>
+                <div>
+                  <span className="inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold"
+                    style={
+                      s.status === "Closed" ? { background: "#f3f4f6", color: "#4b5563" } :
+                      s.status === "Closing" ? { background: "rgba(232,192,38,0.15)", color: "#D4A017" } :
+                      { background: "rgba(46,107,173,0.1)", color: "#2E6BAD" }
+                    }>
+                    {s.status}{s.days > 0 ? ` · ${s.days}d` : ""}
+                  </span>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Top operators leaderboard */}
+        <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <h2 className="text-base font-bold mb-1" style={{ color: "#0F1A2E" }}>Top SPV operators</h2>
+          <p className="text-xs text-gray-500 mb-4">By LP capital raised</p>
+          {topOperators.map((o, i) => (
+            <div key={o.name} className="flex items-center gap-3 py-2.5 border-b border-gray-100 last:border-0">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg text-white font-extrabold text-xs shrink-0"
+                style={{ background: i === 0 ? "linear-gradient(135deg, #E8C026, #50C878)" : i === 1 ? "#2E6BAD" : "#6b7280" }}>
+                #{i + 1}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold truncate" style={{ color: "#0F1A2E" }}>{o.name}</p>
+                <p className="text-[11px] text-gray-500">{o.spvs} SPVs · {o.lps} LPs</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm font-extrabold" style={{ color: "#0F1A2E" }}>{fmt(o.raised)}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* By underlying company / status split */}
+      <div className="grid gap-4 lg:grid-cols-2">
+        <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <h2 className="text-base font-bold mb-1" style={{ color: "#0F1A2E" }}>SPVs by underlying company stage</h2>
+          <p className="text-xs text-gray-500 mb-4">Where the LP capital is going</p>
+          <div className="flex h-9 rounded-lg overflow-hidden mb-4">
+            <div style={{ width: "55%", background: "rgba(232,192,38,0.4)" }} className="flex items-center justify-center text-xs font-bold" >Pre-Seed 55%</div>
+            <div style={{ width: "32%", background: "rgba(80,200,120,0.45)" }} className="flex items-center justify-center text-xs font-bold">Seed 32%</div>
+            <div style={{ width: "13%", background: "rgba(46,107,173,0.25)" }} className="flex items-center justify-center text-[11px] font-bold">A 13%</div>
+          </div>
+          <div className="grid grid-cols-3 gap-3 text-xs">
+            <div><p className="text-gray-500">Pre-Seed SPVs</p><p className="font-bold text-base" style={{ color: "#0F1A2E" }}>26 · $4.6M</p></div>
+            <div><p className="text-gray-500">Seed SPVs</p><p className="font-bold text-base" style={{ color: "#0F1A2E" }}>15 · $2.7M</p></div>
+            <div><p className="text-gray-500">Series A SPVs</p><p className="font-bold text-base" style={{ color: "#0F1A2E" }}>6 · $1.1M</p></div>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white p-5">
+          <h2 className="text-base font-bold mb-1" style={{ color: "#0F1A2E" }}>SPV pipeline</h2>
+          <p className="text-xs text-gray-500 mb-4">Status across all SPVs</p>
+          {[
+            { label: "Building", count: 18, fill: "rgba(46,107,173,0.18)" },
+            { label: "Open for commits", count: 14, fill: "rgba(232,192,38,0.25)" },
+            { label: "Closing this week", count: 9, fill: "rgba(232,192,38,0.4)" },
+            { label: "Wires due", count: 6, fill: "rgba(220,38,38,0.15)" },
+            { label: "Closed", count: 14, fill: "linear-gradient(90deg, #E8C026, #50C878)" },
+          ].map((p, i) => {
+            const max = 18;
+            return (
+              <div key={p.label} className="flex items-center gap-2.5 mb-2">
+                <span className="text-xs text-gray-500 w-32 shrink-0">{p.label}</span>
+                <div className="flex-1 h-6 rounded-md bg-gray-50 relative overflow-hidden">
+                  <div className="h-full rounded-md" style={{ width: `${(p.count / max) * 100}%`, background: p.fill }} />
+                  <span className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-semibold text-gray-700">{p.count}</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Recent SPV activity */}
+      <div className="rounded-xl border border-gray-200 bg-white p-5">
+        <h2 className="text-base font-bold mb-3" style={{ color: "#0F1A2E" }}>Recent SPV activity</h2>
+        {[
+          { color: "#50C878", text: "New SPV created: Summit Seed → BalconyHQ ($200K target, 12 LPs invited)", t: "1h ago" },
+          { color: "#2E6BAD", text: "Wire received: Acme Family Office → $100K to Tavita Health SPV", t: "3h ago" },
+          { color: "#D4A017", text: "Sub docs sent: Vaultic Supply SPV → 5 LPs via DocuSign", t: "6h ago" },
+          { color: "#dc2626", text: "Wire overdue: Olivia Reyes → Tavita Health SPV ($32K, 4 days late)", t: "1d ago" },
+          { color: "#50C878", text: "SPV closed: 1517 Fund Scout → Arcadia Labs ($350K, 9/9 wired)", t: "2d ago" },
+          { color: "#7c3aed", text: "Subscription billed: Weekend Fund → $499 SPV fee for Slate Protocol", t: "3d ago" },
+        ].map((a, i) => (
+          <div key={i} className="flex items-start gap-3 py-2.5 border-b border-gray-100 last:border-0">
+            <div className="w-2 h-2 rounded-full mt-2 shrink-0" style={{ background: a.color }} />
+            <div className="flex-1 text-sm" style={{ color: "#0F1A2E" }}>{a.text}</div>
+            <span className="text-[11px] text-gray-400 shrink-0">{a.t}</span>
           </div>
         ))}
       </div>
