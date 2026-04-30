@@ -41,19 +41,19 @@ function Kpi({ label, value, sub, color }: { label: string; value: string; sub?:
 export default function InvestorDemo() {
   const [tab, setTab] = useState<TabId>("investments");
   return (
-    <div className="grid grid-cols-1 md:grid-cols-[260px_1fr] min-h-[calc(100vh-44px)]">
+    <div className="flex min-h-screen w-full bg-gray-50">
       <Toaster position="top-right" />
-      <aside className="border-r border-gray-200 bg-white">
-        <div className="flex h-14 items-center justify-between px-5 border-b border-gray-200">
+      <aside className="hidden md:flex md:w-64 md:shrink-0 md:flex-col md:sticky md:top-0 md:h-screen border-r border-gray-200 bg-white">
+        <div className="flex h-14 items-center justify-between px-5 border-b border-gray-200 shrink-0">
           <span className="flex items-center gap-1.5 text-base font-bold" style={{ color: "#0F1A2E" }}>Round<span style={{ color: "#50C878" }}>Drop</span></span>
-          <Link href="/demo/founder" className="rounded-md px-2 py-1 text-[10px] font-bold" style={{ background: "#f3f4f6", color: "#6b7280" }}>Switch to founder →</Link>
+          <Link href="/demo/founder" className="rounded-md px-2 py-1 text-[10px] font-bold whitespace-nowrap" style={{ background: "#f3f4f6", color: "#6b7280" }}>Founder →</Link>
         </div>
-        <nav className="space-y-1 p-3">
+        <nav className="flex-1 overflow-y-auto space-y-1 p-3">
           {TABS.map((t) => {
             const active = tab === t.id;
             return (
               <button key={t.id} onClick={() => setTab(t.id)} className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium" style={active ? { background: "rgba(46,107,173,0.1)", color: "#2E6BAD" } : { color: "#6b7280" }}>
-                <t.Icon className="h-4 w-4" />
+                <t.Icon className="h-4 w-4 shrink-0" />
                 <span className="flex-1 text-left">{t.label}</span>
                 {"badge" in t && t.badge ? <span className="rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-bold text-gray-600">{t.badge}</span> : null}
               </button>
@@ -61,7 +61,19 @@ export default function InvestorDemo() {
           })}
         </nav>
       </aside>
-      <main className="overflow-y-auto p-5 md:p-7">
+
+      <div className="md:hidden fixed top-[44px] left-0 right-0 z-40 flex gap-2 overflow-x-auto bg-white border-b border-gray-200 px-3 py-2">
+        {TABS.map((t) => {
+          const active = tab === t.id;
+          return (
+            <button key={t.id} onClick={() => setTab(t.id)} className="flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold whitespace-nowrap" style={active ? { background: "rgba(46,107,173,0.1)", color: "#2E6BAD" } : { background: "#f3f4f6", color: "#6b7280" }}>
+              <t.Icon className="h-3.5 w-3.5" />{t.label}
+            </button>
+          );
+        })}
+      </div>
+
+      <main className="flex-1 min-w-0 p-5 md:p-7 mt-12 md:mt-0">
         {tab === "investments" && <InvestmentsView />}
         {tab === "deals" && <DealsView />}
         {tab === "profile" && <ProfileView />}
