@@ -9,9 +9,13 @@ const isPublicRoute = createRouteMatcher([
   "/investors(.*)",
   "/founders(.*)",
   "/shared(.*)",
+  "/demo(.*)",
 ]);
 
 const isOnboardingRoute = createRouteMatcher(["/onboarding(.*)"]);
+const isAdminRoute = createRouteMatcher(["/admin(.*)"]);
+
+const ADMIN_EMAIL_ALLOWLIST = ["twinee.madan@gmail.com"];
 
 // Preview mode: skip auth when Clerk isn't configured
 function previewMiddleware(req: NextRequest) {
@@ -37,6 +41,18 @@ export default function middleware(req: NextRequest) {
       const authUrl = new URL(isOnboarding ? "/sign-up" : "/sign-in", req.url);
       authUrl.searchParams.set("redirect_url", req.url);
       return NextResponse.redirect(authUrl);
+    }
+
+    // Admin gate: only allowlisted emails can access /admin/*
+    if (isAdminRoute(req)) {
+      const email =
+        ((sessionClaims as Record<string, unknown> | null)?.email as string) ||
+        ((sessionClaims as Record<string, unknown> | null)?.primary_email_address as string) ||
+        "";
+      if (!ADMIN_EMAIL_ALLOWLIST.includes(email.toLowerCase())) {
+        return NextResponse.redirect(new URL("/", req.url));
+      }
+      return NextResponse.next();
     }
 
     let onboardingComplete = (sessionClaims?.metadata as Record<string, unknown>)
